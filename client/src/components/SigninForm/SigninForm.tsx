@@ -5,6 +5,7 @@ import { login } from '../../services'
 type Props = {
   onHide: () => void
 }
+
 const SigninForm: React.FC<Props> = ({ onHide }) => {
   const [form, setForm] = useState({
     email: '',
@@ -14,11 +15,13 @@ const SigninForm: React.FC<Props> = ({ onHide }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    login(form.email, form.password).then(res => {
-      sessionStorage.setItem('token', res.access_token)
-      alert('thanks for login in')
-      onHide()
-    })
+    login(form.email, form.password)
+      .then(res => {
+        sessionStorage.setItem('token', res.access_token)
+        alert('thanks for login in')
+        onHide()
+      })
+      .catch(() => alert('email or username is not correct!'))
   }
 
   const updateField = useCallback(

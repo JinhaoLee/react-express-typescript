@@ -15,10 +15,12 @@ const SignupForm: React.FC<Props> = ({ onHide }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    register(form.email, form.password).then(res => {
-      alert(res.message)
-      onHide()
-    })
+    register(form.email, form.password)
+      .then(res => {
+        alert(res.message)
+        onHide()
+      })
+      .catch(error => alert(error))
   }
 
   const updateField = useCallback(
