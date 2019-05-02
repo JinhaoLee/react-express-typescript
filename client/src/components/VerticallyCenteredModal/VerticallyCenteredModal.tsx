@@ -7,7 +7,7 @@ type Props = {
   onHide: () => void
   signin: boolean
 }
-const VerticallyCenteredModal: React.FC<Props> = props => {
+const VerticallyCenteredModal: React.SFC<Props> = props => {
   return (
     <Modal
       {...props}
@@ -20,7 +20,13 @@ const VerticallyCenteredModal: React.FC<Props> = props => {
           {props.signin ? 'Sign In' : 'Sign Up'}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>{props.signin ? <SigninForm /> : <SignupForm />}</Modal.Body>
+      <Modal.Body>
+        {props.signin ? (
+          <SigninForm onHide={props.onHide} />
+        ) : (
+          <SignupForm onHide={props.onHide} />
+        )}
+      </Modal.Body>
     </Modal>
   )
 }
