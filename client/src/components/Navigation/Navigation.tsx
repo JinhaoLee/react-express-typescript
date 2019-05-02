@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
   Button,
   Navbar,
@@ -8,8 +8,17 @@ import {
   ButtonToolbar,
 } from 'react-bootstrap'
 import Styles from './Navigation.module.css'
+import { VerticallyCenteredModal } from '..'
 
-const Navigation: React.SFC = () => {
+const Navigation: React.FC = () => {
+  const [signupShow, setSignupShow] = useState(false)
+  const [signinShow, setSigninShow] = useState(false)
+  const [singin, setSignin] = useState(false)
+  const handleClose = () => {
+    setSignupShow(false)
+    setSigninShow(false)
+  }
+
   return (
     <>
       <Navbar bg="dark" variant="dark">
@@ -23,12 +32,30 @@ const Navigation: React.SFC = () => {
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <ButtonToolbar>
             <Button variant="outline-info">Search</Button>
-            <Button variant="outline-info" className={Styles.button}>
+            <Button
+              variant="outline-info"
+              className={Styles.button}
+              onClick={() => setSignupShow(true)}
+            >
               Sign up
             </Button>
-            <Button variant="outline-info" className={Styles.button}>
+            <Button
+              variant="outline-info"
+              className={Styles.button}
+              onClick={() => setSigninShow(true)}
+            >
               Sign in
             </Button>
+            <VerticallyCenteredModal
+              onHide={handleClose}
+              show={signupShow}
+              signin={false}
+            />
+            <VerticallyCenteredModal
+              onHide={handleClose}
+              show={signinShow}
+              signin={true}
+            />
           </ButtonToolbar>
         </Form>
       </Navbar>
