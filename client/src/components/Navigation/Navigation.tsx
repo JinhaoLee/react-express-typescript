@@ -14,6 +14,7 @@ const Navigation: React.FC = () => {
   const [signupShow, setSignupShow] = useState(false)
   const [signinShow, setSigninShow] = useState(false)
   const [singin, setSignin] = useState(false)
+
   const handleClose = () => {
     setSignupShow(false)
     setSigninShow(false)
