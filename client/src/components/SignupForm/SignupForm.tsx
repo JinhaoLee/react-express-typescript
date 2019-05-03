@@ -1,19 +1,19 @@
-import React, { useState, FormEvent, useCallback, FocusEvent } from 'react'
+import React, { FocusEvent, FormEvent, useCallback, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
-import { register } from '../../services'
 import { validateEmail, validatePassword } from '../../helpers'
+import { register } from '../../services'
 
-type Props = {
+interface IProps {
   onHide: () => void
 }
 
-const SignupForm: React.FC<Props> = ({ onHide }) => {
+const SignupForm: React.FC<IProps> = ({ onHide }) => {
   const [form, setForm] = useState({
     email: '',
-    password: '',
-    touched: { email: false, password: false },
     emailValid: false,
+    password: '',
     passwordValid: false,
+    touched: { email: false, password: false },
   })
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -21,14 +21,16 @@ const SignupForm: React.FC<Props> = ({ onHide }) => {
     event.stopPropagation()
     register(form.email, form.password)
       .then(res => {
-        if (res.message[0] === '0') onHide()
+        if (res.message[0] === '0') {
+          onHide()
+        }
         alert(res.message)
       })
       .catch(error => alert(error))
   }
 
   const handleBlur = (field: string) => (
-    _event: FocusEvent<HTMLInputElement>
+    event: FocusEvent<HTMLInputElement>
   ) => {
     setForm({
       ...form,

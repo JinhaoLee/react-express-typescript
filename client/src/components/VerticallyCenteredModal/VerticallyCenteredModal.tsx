@@ -1,15 +1,15 @@
 import React from 'react'
 import { Modal } from 'react-bootstrap'
-import { SignupForm, SigninForm } from '..'
+import { SigninForm, SignupForm } from '..'
 
-type Props = {
+interface IProps {
   show: boolean
   type: string
   onHide: () => void
   login: () => void
 }
 
-const VerticallyCenteredModal: React.SFC<Props> = props => {
+const VerticallyCenteredModal: React.SFC<IProps> = props => {
   return (
     <Modal
       {...props}
@@ -23,7 +23,7 @@ const VerticallyCenteredModal: React.SFC<Props> = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {props.type == 'Sign in' ? (
+        {props.type === 'Sign in' ? (
           <SigninForm onHide={props.onHide} login={props.login} />
         ) : (
           <SignupForm onHide={props.onHide} />

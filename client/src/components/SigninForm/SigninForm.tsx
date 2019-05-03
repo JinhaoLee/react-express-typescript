@@ -1,13 +1,13 @@
-import React, { FormEvent, useState, useCallback } from 'react'
+import React, { FormEvent, useCallback, useState } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
 import { UserLogin } from '../../services'
 
-type Props = {
+interface IProps {
   login: () => void
   onHide: () => void
 }
 
-const SigninForm: React.FC<Props> = ({ onHide, login }) => {
+const SigninForm: React.FC<IProps> = ({ onHide, login }) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -40,6 +40,7 @@ const SigninForm: React.FC<Props> = ({ onHide, login }) => {
     },
     [form]
   )
+
   return (
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formBasicEmail">
@@ -53,7 +54,6 @@ const SigninForm: React.FC<Props> = ({ onHide, login }) => {
           onChange={handleChange}
         />
       </Form.Group>
-
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control

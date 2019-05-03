@@ -1,13 +1,13 @@
 import React from 'react'
-import Styles from './table.module.css'
 import { Table } from 'react-bootstrap'
+import Styles from './table.module.css'
 
-type Data = {
+interface IData {
   name: string
   data: string[]
 }
 
-const BootstrapTable: React.FC<Data> = ({ name, data }) => {
+const BootstrapTable: React.FC<IData> = ({ name, data }) => {
   const renderData = () => {
     return data.map((offence: string, i: number) => (
       <tr key={i}>

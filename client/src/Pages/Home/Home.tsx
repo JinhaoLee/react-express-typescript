@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'
-import { Navigation, BootstrapTable } from '../../components'
-import { Container, Image } from 'react-bootstrap'
-import { callAPI } from '../../services'
+import React, { useEffect, useState } from 'react'
+import { Container, Image, Spinner } from 'react-bootstrap'
 import ReactIamge from '../../assets/logo.svg'
+import { BootstrapTable, Navigation } from '../../components'
+import { callAPI } from '../../services'
 import Styles from './home.module.css'
 
 const Home = () => {
@@ -11,7 +11,7 @@ const Home = () => {
   const [isLoading, setLoading] = useState(false)
 
   useEffect(() => {
-    ;(async function() {
+    ;(async () => {
       setLoading(true)
       const offenceRes = await callAPI('offences')
       const areasRes = await callAPI('areas')
@@ -27,7 +27,9 @@ const Home = () => {
       <Image src={ReactIamge} fluid rounded className={Styles.image} />
       <Container fluid={true}>
         {isLoading ? (
-          <p>Loading</p>
+          <Spinner animation="border" role="status">
+            <span className="sr-only">Loading...</span>
+          </Spinner>
         ) : (
           <>
             <BootstrapTable data={offences} name={'offences'} />

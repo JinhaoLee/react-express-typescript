@@ -1,14 +1,14 @@
-import React, { useState, useCallback } from 'react'
+import React, { useCallback, useState } from 'react'
 import {
   Button,
-  Navbar,
-  Nav,
+  ButtonToolbar,
   Form,
   FormControl,
-  ButtonToolbar,
+  Nav,
+  Navbar,
 } from 'react-bootstrap'
-import Styles from './Navigation.module.css'
 import { VerticallyCenteredModal } from '..'
+import Styles from './Navigation.module.css'
 
 const Navigation: React.FC = () => {
   const [signupShow, setSignupShow] = useState(false)
@@ -27,7 +27,7 @@ const Navigation: React.FC = () => {
   }, [isLogined])
 
   const renderButtons = () => {
-    if (!isLogined)
+    if (!isLogined) {
       return (
         <>
           <Button
@@ -58,6 +58,7 @@ const Navigation: React.FC = () => {
           />
         </>
       )
+    }
 
     return (
       <Button variant="outline-info" className={Styles.button}>
@@ -69,7 +70,7 @@ const Navigation: React.FC = () => {
   return (
     <>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">React</Navbar.Brand>
+        <Navbar.Brand href="#home">React is awesome</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="#home">Home</Nav.Link>
           <Nav.Link href="#features">Features</Nav.Link>
