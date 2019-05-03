@@ -17,14 +17,18 @@ const SigninForm: React.FC<Props> = ({ onHide }) => {
     event.stopPropagation()
     login(form.email, form.password)
       .then(res => {
-        sessionStorage.setItem('token', res.access_token)
-        alert('thanks for login in')
-        onHide()
+        if (res.access_token) {
+          sessionStorage.setItem('token', res.access_token)
+          onHide()
+          alert('Thanks for login in')
+        } else {
+          alert(res.message)
+        }
       })
       .catch(() => alert('email or username is not correct!'))
   }
 
-  const updateField = useCallback(
+  const handleChange = useCallback(
     (event: React.FormEvent<FormControl>) => {
       const { name, value } = event.target as HTMLInputElement
       setForm({
@@ -39,22 +43,24 @@ const SigninForm: React.FC<Props> = ({ onHide }) => {
       <Form.Group controlId="formBasicEmail">
         <Form.Label>Email address</Form.Label>
         <Form.Control
+          required
           name="email"
           type="email"
           placeholder="Enter email"
           value={form.email}
-          onChange={updateField}
+          onChange={handleChange}
         />
       </Form.Group>
 
       <Form.Group controlId="formBasicPassword">
         <Form.Label>Password</Form.Label>
         <Form.Control
+          required
           name="password"
           type="password"
           placeholder="Password"
           value={form.password}
-          onChange={updateField}
+          onChange={handleChange}
         />
       </Form.Group>
       <Form.Group controlId="formBasicChecbox">

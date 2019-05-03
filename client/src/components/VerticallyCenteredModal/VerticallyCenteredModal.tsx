@@ -4,9 +4,10 @@ import { SignupForm, SigninForm } from '..'
 
 type Props = {
   show: boolean
+  type: string
   onHide: () => void
-  signin: boolean
 }
+
 const VerticallyCenteredModal: React.SFC<Props> = props => {
   return (
     <Modal
@@ -17,11 +18,11 @@ const VerticallyCenteredModal: React.SFC<Props> = props => {
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
-          {props.signin ? 'Sign In' : 'Sign Up'}
+          {props.type}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {props.signin ? (
+        {props.type == 'Sign in' ? (
           <SigninForm onHide={props.onHide} />
         ) : (
           <SignupForm onHide={props.onHide} />

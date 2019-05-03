@@ -8,7 +8,8 @@ export function validateEmail(email: string): Boolean {
 }
 
 /**
- *
+ * validate password
+ * length should be greater than 6
  * @param password the password
  */
 export function validatePassword(password: string): Boolean {

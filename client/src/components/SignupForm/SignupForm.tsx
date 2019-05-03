@@ -21,8 +21,8 @@ const SignupForm: React.FC<Props> = ({ onHide }) => {
     event.stopPropagation()
     register(form.email, form.password)
       .then(res => {
+        if (res.message[0] === '0') onHide()
         alert(res.message)
-        onHide()
       })
       .catch(error => alert(error))
   }
@@ -37,7 +37,6 @@ const SignupForm: React.FC<Props> = ({ onHide }) => {
         [field]: true,
       },
     })
-    console.log(form.touched)
   }
 
   const handleChange = useCallback(

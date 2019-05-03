@@ -13,7 +13,6 @@ import { VerticallyCenteredModal } from '..'
 const Navigation: React.FC = () => {
   const [signupShow, setSignupShow] = useState(false)
   const [signinShow, setSigninShow] = useState(false)
-  const [singin, setSignin] = useState(false)
 
   const handleClose = () => {
     setSignupShow(false)
@@ -50,12 +49,12 @@ const Navigation: React.FC = () => {
             <VerticallyCenteredModal
               onHide={handleClose}
               show={signupShow}
-              signin={false}
+              type={'Sign up'}
             />
             <VerticallyCenteredModal
               onHide={handleClose}
               show={signinShow}
-              signin={true}
+              type={'Sign in'}
             />
           </ButtonToolbar>
         </Form>
