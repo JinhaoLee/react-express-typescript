@@ -22,7 +22,7 @@ export function register(email: string, password: string) {
     .catch(error => console.log(error))
 }
 
-export function login(email: string, password: string) {
+export function UserLogin(email: string, password: string) {
   return fetch(`${REACT_APP_ENDPOINT_URL}/login`, {
     method: 'POST',
     body: `email=${email}&password=${password}`,

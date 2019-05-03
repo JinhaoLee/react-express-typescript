@@ -1,12 +1,13 @@
 import React, { FormEvent, useState, useCallback } from 'react'
 import { Button, Form, FormControl } from 'react-bootstrap'
-import { login } from '../../services'
+import { UserLogin } from '../../services'
 
 type Props = {
+  login: () => void
   onHide: () => void
 }
 
-const SigninForm: React.FC<Props> = ({ onHide }) => {
+const SigninForm: React.FC<Props> = ({ onHide, login }) => {
   const [form, setForm] = useState({
     email: '',
     password: '',
@@ -15,11 +16,12 @@ const SigninForm: React.FC<Props> = ({ onHide }) => {
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     event.stopPropagation()
-    login(form.email, form.password)
+    UserLogin(form.email, form.password)
       .then(res => {
         if (res.access_token) {
           sessionStorage.setItem('token', res.access_token)
           onHide()
+          login()
           alert('Thanks for login in')
         } else {
           alert(res.message)

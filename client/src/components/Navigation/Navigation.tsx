@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import {
   Button,
   Navbar,
@@ -13,10 +13,57 @@ import { VerticallyCenteredModal } from '..'
 const Navigation: React.FC = () => {
   const [signupShow, setSignupShow] = useState(false)
   const [signinShow, setSigninShow] = useState(false)
+  const [isLogined, setIsLogined] = useState(
+    sessionStorage.getItem('token') === null
+  )
 
   const handleClose = () => {
     setSignupShow(false)
     setSigninShow(false)
+  }
+
+  const handleLogin = useCallback(() => {
+    setIsLogined(true)
+  }, [isLogined])
+
+  const renderButtons = () => {
+    if (!isLogined)
+      return (
+        <>
+          <Button
+            variant="outline-info"
+            className={Styles.button}
+            onClick={() => setSignupShow(true)}
+          >
+            Sign up
+          </Button>
+          <Button
+            variant="outline-info"
+            className={Styles.button}
+            onClick={() => setSigninShow(true)}
+          >
+            Sign in
+          </Button>
+          <VerticallyCenteredModal
+            onHide={handleClose}
+            show={signupShow}
+            type={'Sign up'}
+            login={handleLogin}
+          />
+          <VerticallyCenteredModal
+            onHide={handleClose}
+            show={signinShow}
+            type={'Sign in'}
+            login={handleLogin}
+          />
+        </>
+      )
+
+    return (
+      <Button variant="outline-info" className={Styles.button}>
+        Logout
+      </Button>
+    )
   }
 
   return (
@@ -31,31 +78,13 @@ const Navigation: React.FC = () => {
         <Form inline>
           <FormControl type="text" placeholder="Search" className="mr-sm-2" />
           <ButtonToolbar>
-            <Button variant="outline-info">Search</Button>
             <Button
               variant="outline-info"
-              className={Styles.button}
-              onClick={() => setSignupShow(true)}
+              onClick={() => alert('coming soon!')}
             >
-              Sign up
+              Search
             </Button>
-            <Button
-              variant="outline-info"
-              className={Styles.button}
-              onClick={() => setSigninShow(true)}
-            >
-              Sign in
-            </Button>
-            <VerticallyCenteredModal
-              onHide={handleClose}
-              show={signupShow}
-              type={'Sign up'}
-            />
-            <VerticallyCenteredModal
-              onHide={handleClose}
-              show={signinShow}
-              type={'Sign in'}
-            />
+            {renderButtons()}
           </ButtonToolbar>
         </Form>
       </Navbar>
