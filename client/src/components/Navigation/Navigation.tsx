@@ -19,13 +19,13 @@ interface IProps {
 const Navigation: React.FC<IProps> = ({ onFetch }) => {
   const [signupShow, setSignupShow] = useState(false)
   const [signinShow, setSigninShow] = useState(false)
+  const [isLogined, setIsLogined] = useState(
+    sessionStorage.getItem('token') !== null
+  )
   // const [form, setForm] = useState({
   //   param: 'offence',
   //   filter: '',
   // })
-  const [isLogined, setIsLogined] = useState(
-    sessionStorage.getItem('token') === null
-  )
 
   const handleClose = () => {
     setSignupShow(false)
@@ -36,6 +36,11 @@ const Navigation: React.FC<IProps> = ({ onFetch }) => {
     setIsLogined(true)
   }, [isLogined])
 
+  const handleLogout = () => {
+    sessionStorage.removeItem('token')
+    setIsLogined(false)
+    alert('Hope you go back')
+  }
   // const handleSearch = () => {
   //   search(form.param, form.filter).then(res => onFetch(res.result))
   // }
@@ -83,7 +88,11 @@ const Navigation: React.FC<IProps> = ({ onFetch }) => {
     }
 
     return (
-      <Button variant="outline-info" className={Styles.button}>
+      <Button
+        variant="outline-info"
+        className={Styles.button}
+        onClick={handleLogout}
+      >
         Logout
       </Button>
     )
@@ -92,9 +101,11 @@ const Navigation: React.FC<IProps> = ({ onFetch }) => {
   return (
     <>
       <Navbar bg="dark" variant="dark">
-        <Navbar.Brand href="#home">React is awesome</Navbar.Brand>
+        <Navbar.Brand href="#home">CAB230</Navbar.Brand>
         <Nav className="mr-auto">
           <Nav.Link href="">Home</Nav.Link>
+          <Nav.Link href="">Contact</Nav.Link>
+          <Nav.Link href="">About</Nav.Link>
         </Nav>
         <Form inline>
           {/* <FormControl
