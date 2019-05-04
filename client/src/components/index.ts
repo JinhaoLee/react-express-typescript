@@ -5,3 +5,4 @@ export {
 } from './VerticallyCenteredModal/VerticallyCenteredModal'
 export { default as SignupForm } from './SignupForm/SignupForm'
 export { default as SigninForm } from './SigninForm/SigninForm'
+export { default as BootJumbotron } from './BootJumbotron/BootJumbotron'

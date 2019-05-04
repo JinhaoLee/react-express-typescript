@@ -1,11 +1,12 @@
 const REACT_APP_ENDPOINT_URL = 'https://cab230.hackhouse.sh'
 
 export function callAPI(params: string): any {
-  // const BASE_URL = process.env.REACT_APP_ENDPOINT_URL
   return fetch(`${REACT_APP_ENDPOINT_URL}/${params}`, {
     method: 'GET',
   }).then(response => {
-    if (!response.ok) throw response
+    if (!response.ok) {
+      throw response
+    }
     return response.json()
   })
 }
@@ -32,11 +33,18 @@ export function UserLogin(email: string, password: string) {
   })
     .then(response => response.json())
     .catch(error => console.log(error))
-  // .then(response => {
-  //   if (!response.ok) throw new Error('Network response was not ok')
-  //   return response.json()
-  // })
-  // .catch(error => {
-  //   console.log('Problem with fetch ', error.message)
-  // })
+}
+
+export function search(param: string, filter: string) {
+  return fetch(
+    `${REACT_APP_ENDPOINT_URL}/search?offence=Armed Robbery&${param}=${filter}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+    }
+  )
+    .then(response => response.json())
+    .catch(error => console.error(error))
 }

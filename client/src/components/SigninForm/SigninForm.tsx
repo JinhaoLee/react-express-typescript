@@ -19,7 +19,7 @@ const SigninForm: React.FC<IProps> = ({ onHide, login }) => {
     UserLogin(form.email, form.password)
       .then(res => {
         if (res.access_token) {
-          sessionStorage.setItem('token', res.access_token)
+          sessionStorage.setItem('token', res.token)
           onHide()
           login()
           alert('Thanks for login in')

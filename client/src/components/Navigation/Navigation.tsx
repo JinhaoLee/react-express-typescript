@@ -3,16 +3,26 @@ import {
   Button,
   ButtonToolbar,
   Form,
-  FormControl,
+  // FormControl,
   Nav,
   Navbar,
 } from 'react-bootstrap'
 import { VerticallyCenteredModal } from '..'
+// import { search } from '../../services'
+import { IData } from '../BootstrapTable/BootstrapTable'
 import Styles from './Navigation.module.css'
 
-const Navigation: React.FC = () => {
+interface IProps {
+  onFetch: (fetchedData: IData) => void
+}
+
+const Navigation: React.FC<IProps> = ({ onFetch }) => {
   const [signupShow, setSignupShow] = useState(false)
   const [signinShow, setSigninShow] = useState(false)
+  // const [form, setForm] = useState({
+  //   param: 'offence',
+  //   filter: '',
+  // })
   const [isLogined, setIsLogined] = useState(
     sessionStorage.getItem('token') === null
   )
@@ -25,6 +35,18 @@ const Navigation: React.FC = () => {
   const handleLogin = useCallback(() => {
     setIsLogined(true)
   }, [isLogined])
+
+  // const handleSearch = () => {
+  //   search(form.param, form.filter).then(res => onFetch(res.result))
+  // }
+
+  // const handleChange = (event: React.FormEvent<FormControl>) => {
+  //   const { name, value } = event.target as HTMLInputElement
+  //   setForm({
+  //     ...form,
+  //     [name]: value,
+  //   })
+  // }
 
   const renderButtons = () => {
     if (!isLogined) {
@@ -72,19 +94,21 @@ const Navigation: React.FC = () => {
       <Navbar bg="dark" variant="dark">
         <Navbar.Brand href="#home">React is awesome</Navbar.Brand>
         <Nav className="mr-auto">
-          <Nav.Link href="#home">Home</Nav.Link>
-          <Nav.Link href="#features">Features</Nav.Link>
-          <Nav.Link href="#pricing">Pricing</Nav.Link>
+          <Nav.Link href="">Home</Nav.Link>
         </Nav>
         <Form inline>
-          <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+          {/* <FormControl
+            name="filter"
+            type="text"
+            placeholder="Search"
+            className="mr-sm-2"
+            value={form.filter}
+            onChange={handleChange}
+          /> */}
           <ButtonToolbar>
-            <Button
-              variant="outline-info"
-              onClick={() => alert('coming soon!')}
-            >
+            {/* <Button variant="outline-info" onClick={handleSearch}>
               Search
-            </Button>
+            </Button> */}
             {renderButtons()}
           </ButtonToolbar>
         </Form>

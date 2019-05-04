@@ -2,19 +2,25 @@ import React from 'react'
 import { Table } from 'react-bootstrap'
 import Styles from './table.module.css'
 
-interface IData {
-  name: string
-  data: string[]
+export interface IData {
+  data: Array<{ [key: string]: string | number }>
 }
 
-const BootstrapTable: React.FC<IData> = ({ name, data }) => {
+interface IProsps extends IData {
+  name: string
+}
+
+const BootstrapTable: React.FC<IProsps> = ({ name, data }) => {
   const renderData = () => {
-    return data.map((offence: string, i: number) => (
-      <tr key={i}>
-        <td>{i + 1}</td>
-        <td>{offence}</td>
-      </tr>
-    ))
+    if (data) {
+      return data.map((item: { [key: string]: string | number }, i: number) => (
+        <tr key={i}>
+          {Object.values(item).map((value: string | number, j: number) => (
+            <td key={j}>{value}</td>
+          ))}
+        </tr>
+      ))
+    }
   }
 
   return (
@@ -22,8 +28,8 @@ const BootstrapTable: React.FC<IData> = ({ name, data }) => {
       <Table striped bordered hover className={Styles.table}>
         <thead>
           <tr>
-            <th>id</th>
-            <th>{name}</th>
+            {data &&
+              Object.keys(data[0]).map((key, i) => <th key={i}>{key}</th>)}
           </tr>
         </thead>
         <tbody>{renderData()}</tbody>
