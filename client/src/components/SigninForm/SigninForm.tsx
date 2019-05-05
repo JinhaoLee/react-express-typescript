@@ -1,77 +1,106 @@
-import React, { FormEvent, useCallback, useState } from 'react'
-import { Button, Form, FormControl } from 'react-bootstrap'
+import {
+  ErrorMessage,
+  Field,
+  FieldProps,
+  Form,
+  Formik,
+  FormikActions,
+  FormikProps,
+} from 'formik'
+import React from 'react'
+import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
+import * as Yup from 'yup'
 import { UserLogin } from '../../services'
+
+interface IFormValues {
+  email: string
+  password: string
+}
 
 interface IProps {
   login: () => void
   onHide: () => void
 }
 
+const SigninSchema = Yup.object().shape({
+  email: Yup.string().email('Invalid email address'),
+  password: Yup.string()
+    .min(6, 'Too Short!')
+    .max(12, 'Too Long!')
+    .required('Required'),
+})
+
 const SigninForm: React.FC<IProps> = ({ onHide, login }) => {
-  const [form, setForm] = useState({
-    email: '',
-    password: '',
-  })
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    UserLogin(form.email, form.password)
-      .then(res => {
-        if (res.access_token) {
-          sessionStorage.setItem('token', res.token)
-          onHide()
-          login()
-          alert('Thanks for login in')
-        } else {
-          alert(res.message)
-        }
-      })
-      .catch(() => alert('email or username is not correct!'))
-  }
-
-  const handleChange = useCallback(
-    (event: React.FormEvent<FormControl>) => {
-      const { name, value } = event.target as HTMLInputElement
-      setForm({
-        ...form,
-        [name]: value,
-      })
-    },
-    [form]
-  )
-
   return (
-    <Form onSubmit={handleSubmit}>
-      <Form.Group controlId="formBasicEmail">
-        <Form.Label>Email address</Form.Label>
-        <Form.Control
-          required
-          name="email"
-          type="email"
-          placeholder="Enter email"
-          value={form.email}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formBasicPassword">
-        <Form.Label>Password</Form.Label>
-        <Form.Control
-          required
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-        />
-      </Form.Group>
-      <Form.Group controlId="formBasicChecbox">
-        <Form.Check type="checkbox" label="Remember me" />
-      </Form.Group>
-      <Button variant="primary" type="submit">
-        Submit
-      </Button>
-    </Form>
+    <div>
+      <Formik
+        initialValues={{ email: '', password: '' }}
+        validationSchema={SigninSchema}
+        onSubmit={async (
+          values: IFormValues,
+          actions: FormikActions<IFormValues>
+        ) => {
+          try {
+            const loginResponse = await UserLogin(values.email, values.password)
+            if (loginResponse.token) {
+              sessionStorage.setItem('token', loginResponse.token)
+              onHide()
+              login()
+            } else {
+              alert(loginResponse.message)
+              actions.setSubmitting(false)
+            }
+          } catch (error) {
+            alert('email or username is not correct!')
+          }
+        }}
+        render={(formikBag: FormikProps<IFormValues>) => (
+          <Form>
+            <Field
+              name="email"
+              type="email"
+              render={({ field, form }: FieldProps<IFormValues>) => (
+                <FormGroup controlId="formBasicEmail">
+                  <FormLabel>Email address</FormLabel>
+                  <FormControl
+                    placeholder="Enter email"
+                    isInvalid={!!form.errors.email}
+                    {...field}
+                  />
+                  <FormControl.Feedback type="invalid">
+                    <ErrorMessage name="email" />
+                  </FormControl.Feedback>
+                </FormGroup>
+              )}
+            />
+            <Field
+              name="password"
+              render={({ field, form }: FieldProps<IFormValues>) => (
+                <FormGroup controlId="formBasicPassword">
+                  <FormLabel>Password</FormLabel>
+                  <FormControl
+                    type="password"
+                    placeholder="Password"
+                    isInvalid={!!form.errors.password}
+                    {...field}
+                  />
+                  <FormControl.Feedback type="invalid">
+                    <ErrorMessage name="password" />
+                  </FormControl.Feedback>
+                </FormGroup>
+              )}
+            />
+            <Button
+              variant="primary"
+              type="submit"
+              disabled={formikBag.isSubmitting}
+            >
+              Submit
+            </Button>
+          </Form>
+        )}
+      />
+    </div>
   )
 }
 
