@@ -124,7 +124,6 @@ const Navigation: React.FC<IProps> = ({ onFetch }) => {
           </ButtonToolbar>
         </Form>
       </Navbar>
-      <br />
     </>
   )
 }

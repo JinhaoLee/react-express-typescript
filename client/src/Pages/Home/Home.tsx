@@ -18,6 +18,10 @@ const Home = () => {
     (param: string) => async (
       event: React.MouseEvent<HTMLButtonElement, MouseEvent>
     ) => {
+      if (!sessionStorage.getItem('token')) {
+        alert('Please log in')
+        return
+      }
       setLoading(true)
       switch (param) {
         case 'age': {

@@ -8,6 +8,7 @@ interface IProps {
     | ((event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void)
     | undefined
 }
+
 const BootJumbotron: React.SFC<IProps> = ({ handleFetch }) => {
   return (
     <Jumbotron>
