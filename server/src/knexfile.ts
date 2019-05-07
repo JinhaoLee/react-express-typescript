@@ -7,7 +7,7 @@ const knex: Knex = {
     connection: {
       host: "127.0.0.1",
       user: "root",
-      password: "Ljhjay2018",
+      password: "password",
       database: "web_computing"
     },
     migrations: {
