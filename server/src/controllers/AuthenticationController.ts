@@ -3,7 +3,7 @@ import { User } from "../models";
 import { HttpException } from "../exceptions";
 import * as jwt from "jsonwebtoken";
 
-class AuthController {
+class AuthenticationController {
   private userModel: User;
 
   constructor() {
@@ -43,4 +43,4 @@ class AuthController {
   };
 }
 
-export default AuthController;
+export default AuthenticationController;

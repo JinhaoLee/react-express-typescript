@@ -1,9 +1,9 @@
-import AuthController from "../controllers/AuthController";
 import { Application } from "express";
 import {
   RegisterController,
   SearchController,
-  HelperController
+  HelperController,
+  AuthController
 } from "../controllers";
 import { authMiddleware } from "../middlewares";
 
