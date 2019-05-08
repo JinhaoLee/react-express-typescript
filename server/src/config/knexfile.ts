@@ -20,7 +20,7 @@ const knex: Knex = {
   },
 
   production: {
-    client: "postgresql",
+    client: "mysql",
     connection: {
       database: "my_db",
       user: "username",
