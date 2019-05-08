@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { Offence } from "../models";
+import { HttpException } from "../exceptions";
 
 class SearchController {
   private offence: Offence;
@@ -7,17 +8,24 @@ class SearchController {
   constructor() {
     this.offence = new Offence();
   }
-  public search = async (req: Request, res: Response) => {
+
+  public search = async (req: Request, res: Response, next: NextFunction) => {
     const { query } = req;
 
     // check if offence is provided
     if (!query.offence) {
-      res.status(400).send({ message: "Missing the offence query parm" });
+      next(new HttpException(400, "Missing the offence query parm"));
       return;
     }
 
     // get result by querying databse
-    const result = await this.offence.getOffences(query);
+    let result;
+    try {
+      result = await this.offence.getOffences(query);
+    } catch (error) {
+      next(new HttpException(400, error.message));
+      return;
+    }
 
     res.status(200).send({ query, result });
   };

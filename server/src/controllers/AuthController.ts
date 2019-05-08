@@ -1,6 +1,7 @@
-import { Request, Response } from "express";
-import * as jwt from "jsonwebtoken";
+import { Request, Response, NextFunction } from "express";
 import { User } from "../models";
+import { HttpException } from "../exceptions";
+import * as jwt from "jsonwebtoken";
 
 class AuthController {
   private userModel: User;
@@ -9,24 +10,24 @@ class AuthController {
     this.userModel = new User();
   }
 
-  public login = async (req: Request, res: Response) => {
+  public login = async (req: Request, res: Response, next: NextFunction) => {
     // check if username and password are set
     const { email, password } = req.body;
     if (!(email && password)) {
-      res.status(400).send({ message: "Please provide email and password" });
+      next(new HttpException(404, "Please provide email and password"));
       return;
     }
 
     // get user from database
     const user = await this.userModel.getUserByEmail(email);
     if (!user) {
-      res.status(400).send({ message: "Invalid login - email not found" });
+      next(new HttpException(401, "Invalid login - email not found"));
       return;
     }
 
     // check if encrypted password match
     if (!(await this.userModel.IsPasswordValid(email, password))) {
-      res.status(401).send({ message: "Invalid login - bad password" });
+      next(new HttpException(401, "Invalid login - bad password"));
       return;
     }
 

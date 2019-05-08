@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { User } from "../models";
+import { HttpException } from "../exceptions";
 
 class RegisterController {
   private userModel: User;
@@ -8,17 +9,17 @@ class RegisterController {
     this.userModel = new User();
   }
 
-  public register = async (req: Request, res: Response) => {
+  public register = async (req: Request, res: Response, next: NextFunction) => {
     const { email, password } = req.body;
     if (!(email && password)) {
-      res.status(400).send({ message: "Please provide email and password" });
+      next(new HttpException(404, "Please provide email and password"));
       return;
     }
 
     // check if user already exists in database
     const user = await this.userModel.getUserByEmail(email);
     if (user) {
-      res.status(400).send({ message: "oops! That user already exists :(" });
+      next(new HttpException(400, "The user already exists :("));
       return;
     }
 

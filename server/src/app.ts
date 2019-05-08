@@ -6,6 +6,7 @@ import helmet from "helmet";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "./swagger.json";
+import { errorMiddleware } from "./middlewares";
 
 class App {
   public app: express.Application;
@@ -15,6 +16,7 @@ class App {
     this.app = express();
     this.config();
     this.routes.routes(this.app);
+    this.app.use(errorMiddleware);
   }
 
   private config(): void {

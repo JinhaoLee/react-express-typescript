@@ -16,7 +16,7 @@ class Offence {
       .select("column")
       .where("pretty", offence);
 
-    if (!offenceNameRows) {
+    if (!offenceNameRows[0]) {
       throw new Error("Offence name not found");
     }
 
@@ -51,6 +51,26 @@ class Offence {
       .groupBy("offences.area");
 
     return offenceRows;
+  };
+
+  public getOffenceList = async () => {
+    return await knex("offence_columns").distinct("pretty");
+  };
+
+  public getAreaList = async () => {
+    return await knex("offences").distinct("area");
+  };
+
+  public getAgeList = async () => {
+    return await knex("offences").distinct("age");
+  };
+
+  public getGenderList = async () => {
+    return await knex("offences").distinct("gender");
+  };
+
+  public getYearList = async () => {
+    return await knex("offences").distinct("year");
   };
 }
 
