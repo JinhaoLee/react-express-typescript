@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import UserModel from "../models/User";
+import { User } from "../models";
 
 class RegisterController {
-  private userModel: UserModel;
+  private userModel: User;
 
   constructor() {
-    this.userModel = new UserModel();
+    this.userModel = new User();
   }
 
   public register = async (req: Request, res: Response) => {

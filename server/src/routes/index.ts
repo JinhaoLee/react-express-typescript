@@ -1,8 +1,7 @@
 import AuthController from "../controllers/AuthController";
 import { Application } from "express";
-import RegisterController from "../controllers/REgisterController";
-import SearchController from "../controllers/SearchController";
-import checkToken from "../middlewares/checkToken";
+import { RegisterController, SearchController } from "../controllers";
+import { checkToken } from "../middlewares";
 
 class Routes {
   private authController: AuthController;

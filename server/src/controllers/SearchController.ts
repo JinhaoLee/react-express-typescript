@@ -1,19 +1,25 @@
 import { Request, Response } from "express";
+import { Offence } from "../models";
 
 class SearchController {
-  constructor() {}
+  private offence: Offence;
+
+  constructor() {
+    this.offence = new Offence();
+  }
   public search = async (req: Request, res: Response) => {
+    const { query } = req;
+
     // check if offence is provided
-    if (!req.query.offence) {
+    if (!query.offence) {
       res.status(400).send({ message: "Missing the offence query parm" });
       return;
     }
 
-    for (const key in req.query) {
-      console.log(key, req.query[key]);
-    }
+    // get result by querying databse
+    const result = await this.offence.getOffences(query);
 
-    res.status(200).send({ message: "success" });
+    res.status(200).send({ query, result });
   };
 }
 

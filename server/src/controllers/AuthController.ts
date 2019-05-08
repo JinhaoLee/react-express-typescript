@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
-import UserModel from "../models/User";
+import { User } from "../models";
 
 class AuthController {
-  private userModel: UserModel;
+  private userModel: User;
 
   constructor() {
-    this.userModel = new UserModel();
+    this.userModel = new User();
   }
 
   public login = async (req: Request, res: Response) => {

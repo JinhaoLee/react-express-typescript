@@ -1,11 +1,10 @@
-import Routes from "./routes/Routes";
+import Routes from "./routes";
 import dotenv from "dotenv";
 import bodyParser from "body-parser";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
-// import swaggerJSDoc from "swagger-jsdoc";
 import * as swaggerDocument from "./swagger.json";
 
 class App {
@@ -27,8 +26,12 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     // secure Express apps by setting various HTTP headers
     this.app.use(helmet());
-    // use combined preset
-    this.app.use(morgan("combined"));
+    // use dev/combined preset
+    if (process.env.NODE_ENV === "development") {
+      this.app.use(morgan("dev"));
+    } else {
+      this.app.use(morgan("combined"));
+    }
     // setup swagger
     this.app.use(
       "/api-docs",
