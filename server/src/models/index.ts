@@ -1,2 +1,2 @@
-export { default as Offence } from "./Offence";
-export { default as User } from "./User";
+export { default as Offence } from "./offence";
+export { default as User } from "./user";

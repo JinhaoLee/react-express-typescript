@@ -1,7 +1,7 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-const checkToken = (req: Request, res: Response, next: NextFunction) => {
+const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   let token =
     <string>req.headers["x-access-token"] || req.headers["authorization"];
 
@@ -30,4 +30,4 @@ const checkToken = (req: Request, res: Response, next: NextFunction) => {
   });
 };
 
-export default checkToken;
+export default authMiddleware;

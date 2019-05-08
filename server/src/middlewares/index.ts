@@ -1,2 +1,2 @@
-export { default as checkToken } from "./checkToken";
-export { default as errorMiddleware } from "./error.middleware";
+export { default as authMiddleware } from "./auth";
+export { default as errorMiddleware } from "./error";

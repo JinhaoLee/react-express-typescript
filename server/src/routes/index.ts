@@ -5,7 +5,7 @@ import {
   SearchController,
   HelperController
 } from "../controllers";
-import { checkToken } from "../middlewares";
+import { authMiddleware } from "../middlewares";
 
 class Routes {
   private authController: AuthController;
@@ -26,7 +26,7 @@ class Routes {
     app.route("/register").post(this.registerController.register);
 
     // search
-    app.route("/search").get(checkToken, this.searchController.search);
+    app.route("/search").get(authMiddleware, this.searchController.search);
 
     // helpers
     app.route("/offences").get(this.helperController.getOffences);
