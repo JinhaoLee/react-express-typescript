@@ -1,4 +1,5 @@
 import knex from "../db/knex";
+import bcrypt from "bcrypt";
 
 type User = {
   id: string;
@@ -22,7 +23,7 @@ class UserModel {
     if (!userRows.length || !userRows) {
       return false;
     }
-    return password === userRows[0].password;
+    return await bcrypt.compare(password, userRows[0].password);
   };
 
   public addNewUser = async (
@@ -30,7 +31,10 @@ class UserModel {
     password: string
   ): Promise<boolean> => {
     try {
-      await knex("users").insert({ email, password });
+      bcrypt.hash(password, 10, async (err, hash) => {
+        if (err) throw new Error();
+        await knex("users").insert({ email, password: hash });
+      });
       return true;
     } catch (error) {
       console.log(error);

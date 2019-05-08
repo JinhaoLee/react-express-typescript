@@ -18,14 +18,14 @@ class RegisterController {
     // check if user already exists in database
     const user = await this.userModel.getUserByEmail(email);
     if (user) {
-      res.status(400).send({ message: "You already registered" });
+      res.status(400).send({ message: "oops! That user already exists :(" });
       return;
     }
 
     // add user to database
     await this.userModel.addNewUser(email, password);
 
-    res.send({ message: "success" });
+    res.status(201).send({ message: "success" });
   };
 }
 

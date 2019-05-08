@@ -4,6 +4,9 @@ import bodyParser from "body-parser";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import swaggerUi from "swagger-ui-express";
+// import swaggerJSDoc from "swagger-jsdoc";
+import * as swaggerDocument from "./swagger.json";
 
 class App {
   public app: express.Application;
@@ -26,6 +29,12 @@ class App {
     this.app.use(helmet());
     // use combined preset
     this.app.use(morgan("combined"));
+    // setup swagger
+    this.app.use(
+      "/api-docs",
+      swaggerUi.serve,
+      swaggerUi.setup(swaggerDocument)
+    );
   }
 }
 

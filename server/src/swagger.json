@@ -1,0 +1,89 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CAB230 : Web Computing API",
+    "description": "This API is to be used during development of assignments for the QUT CAB230 Web Computing Unit.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Local host server for testing"
+    }
+  ],
+  "paths": {
+    "/register": {
+      "post": {
+        "summary": "Registers a new user account.",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/createdMessage"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "oops! That user already exists :("
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "user": {
+        "properties": {
+          "title": "User Informationn",
+          "type": "object",
+          "email": {
+            "type": "string",
+            "required": true,
+            "example": "demo-user@gmail.com"
+          },
+          "password": {
+            "type": "string",
+            "required": true,
+            "example": "demouserpassword"
+          }
+        }
+      },
+      "createdMessage": {
+        "properties": {
+          "type": "object",
+          "message": {
+            "type": "string",
+            "example": "success"
+          }
+        }
+      }
+    }
+  }
+}

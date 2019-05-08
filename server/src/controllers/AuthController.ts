@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import * as jwt from "jsonwebtoken";
 import UserModel from "../models/User";
-import config from "../config/config";
 
 class AuthController {
   private userModel: UserModel;
@@ -21,25 +20,25 @@ class AuthController {
     // get user from database
     const user = await this.userModel.getUserByEmail(email);
     if (!user) {
-      res.status(400).send({ message: "Email was not found" });
+      res.status(400).send({ message: "Invalid login - email not found" });
       return;
     }
 
     // check if encrypted password match
     if (!(await this.userModel.IsPasswordValid(email, password))) {
-      res.status(400).send({ message: "Email was not found" });
+      res.status(401).send({ message: "Invalid login - bad password" });
       return;
     }
 
     // JWT, valid for 1 hour
     const token = jwt.sign(
       { id: user.id, email: user.email },
-      config.jwtSecret,
+      process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
 
     // send the jwt in the response
-    res.send({ message: "success", token });
+    res.status(200).send({ message: "success", token });
   };
 }
 
