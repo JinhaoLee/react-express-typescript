@@ -5,7 +5,7 @@ import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
 import swaggerUi from "swagger-ui-express";
-import * as swaggerDocument from "./swagger.json";
+import * as swaggerDocument from "./config/swagger.json";
 import { errorMiddleware } from "./middlewares";
 
 class App {
