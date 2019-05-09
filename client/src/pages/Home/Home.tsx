@@ -27,6 +27,7 @@ interface ISelect {
 
 const Home = () => {
   const [isLoading, setLoading] = useState(false)
+  const [isShown, setIsShown] = useState(false)
   const [data, setData] = useState<any>([])
   const [select, setSelect] = useState<ISelect>({
     offence: [],
@@ -74,6 +75,7 @@ const Home = () => {
       alert('Please log in')
       return
     }
+    setIsShown(true)
     setLoading(true)
     const fetchedData = await search(form)
     setData([fetchedData.result])
@@ -115,7 +117,7 @@ const Home = () => {
     <React.Fragment>
       <Navigation onFetch={fetchData} />
       <BootJumbotron />
-      <Container>
+      <Container className="mb-5">
         <Row>
           <Col md={4} />
           <Col>
@@ -132,27 +134,29 @@ const Home = () => {
           </Col>
           <Col md={4} />
         </Row>
-        {isLoading ? (
-          <Spinner animation="border" role="status">
-            <span className="sr-only">Loading...</span>
-          </Spinner>
-        ) : (
-          <Row>
-            <Col>
-              <BootstrapTable data={data[0]} />
-            </Col>
-            <Col>
-              <Map
-                isMarkerShown
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_4TBv8ssKrKew8ewisQ3oidXouSyXq8&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div style={{ height: `100%` }} />}
-                containerElement={<div style={{ height: `400px` }} />}
-                mapElement={<div style={{ height: `100%` }} />}
-                data={data[0]}
-              />
-            </Col>
-          </Row>
-        )}
+        {isShown ? (
+          isLoading ? (
+            <Spinner animation="border" role="status">
+              <span className="sr-only">Loading...</span>
+            </Spinner>
+          ) : (
+            <Row>
+              <Col>
+                <BootstrapTable data={data[0]} />
+              </Col>
+              <Col>
+                <Map
+                  isMarkerShown
+                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_4TBv8ssKrKew8ewisQ3oidXouSyXq8&v=3.exp&libraries=geometry,drawing,places"
+                  loadingElement={<div style={{ height: `100%` }} />}
+                  containerElement={<div style={{ height: `400px` }} />}
+                  mapElement={<div style={{ height: `100%` }} />}
+                  data={data[0]}
+                />
+              </Col>
+            </Row>
+          )
+        ) : null}
       </Container>
     </React.Fragment>
   )

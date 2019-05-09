@@ -8,7 +8,6 @@ export interface IData {
 
 const BootstrapTable: React.FC<IData> = ({ data }) => {
   const renderRows = () => {
-    console.log(data)
     if (data) {
       const modifiedData = data.map(item => ({
         LGA: item.LGA,
@@ -27,8 +26,15 @@ const BootstrapTable: React.FC<IData> = ({ data }) => {
   }
 
   return (
-    <>
-      <Table striped bordered hover className={Styles.table}>
+    <div style={{ height: '400px', overflow: 'overlay' }}>
+      <Table
+        striped
+        bordered
+        hover
+        variant="dark"
+        responsive
+        className={Styles.table}
+      >
         <thead>
           <tr>
             <th>LGA</th>
@@ -37,7 +43,7 @@ const BootstrapTable: React.FC<IData> = ({ data }) => {
         </thead>
         <tbody>{renderRows()}</tbody>
       </Table>
-    </>
+    </div>
   )
 }
 
