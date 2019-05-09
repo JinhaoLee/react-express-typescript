@@ -37,3 +37,7 @@ Thumbs.db
 # Ignore built ts files
 dist/**/*
 /src/knexfile.ts
+../settings.json
+.DC_Store
+server.crt
+server.key

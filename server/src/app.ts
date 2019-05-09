@@ -4,6 +4,8 @@ import bodyParser from "body-parser";
 import express from "express";
 import helmet from "helmet";
 import morgan from "morgan";
+import path from "path";
+import rfs from "rotating-file-stream";
 import swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "./config/swagger.json";
 import { errorMiddleware } from "./middlewares";
@@ -29,10 +31,14 @@ class App {
     // secure Express apps by setting various HTTP headers
     this.app.use(helmet());
     // use dev/combined preset
+    const accessLogStream = rfs("access.log", {
+      interval: "1d",
+      path: path.join(__dirname, "log")
+    });
     if (process.env.NODE_ENV === "development") {
       this.app.use(morgan("dev"));
     } else {
-      this.app.use(morgan("combined"));
+      this.app.use(morgan("combined", { stream: accessLogStream }));
     }
     // setup swagger
     this.app.use(
