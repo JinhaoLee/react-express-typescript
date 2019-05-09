@@ -6,20 +6,23 @@ export interface IData {
   data: Array<{ [key: string]: string | number }>
 }
 
-interface IProsps extends IData {
-  name: string
-}
-
-const BootstrapTable: React.FC<IProsps> = ({ name, data }) => {
-  const renderData = () => {
+const BootstrapTable: React.FC<IData> = ({ data }) => {
+  const renderRows = () => {
+    console.log(data)
     if (data) {
-      return data.map((item: { [key: string]: string | number }, i: number) => (
-        <tr key={i}>
-          {Object.values(item).map((value: string | number, j: number) => (
-            <td key={j}>{value}</td>
-          ))}
-        </tr>
-      ))
+      const modifiedData = data.map(item => ({
+        LGA: item.LGA,
+        total: item.total,
+      }))
+      return modifiedData.map(
+        (item: { [key: string]: string | number }, i: number) => (
+          <tr key={i}>
+            {Object.values(item).map((value: string | number, j: number) => (
+              <td key={j}>{value}</td>
+            ))}
+          </tr>
+        )
+      )
     }
   }
 
@@ -28,11 +31,11 @@ const BootstrapTable: React.FC<IProsps> = ({ name, data }) => {
       <Table striped bordered hover className={Styles.table}>
         <thead>
           <tr>
-            {data &&
-              Object.keys(data[0]).map((key, i) => <th key={i}>{key}</th>)}
+            <th>LGA</th>
+            <th>Total</th>
           </tr>
         </thead>
-        <tbody>{renderData()}</tbody>
+        <tbody>{renderRows()}</tbody>
       </Table>
     </>
   )

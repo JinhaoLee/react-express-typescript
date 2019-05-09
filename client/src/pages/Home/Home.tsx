@@ -1,5 +1,13 @@
-import React, { useCallback, useState } from 'react'
-import { Button, Col, Container, Form, Row, Spinner } from 'react-bootstrap'
+import React, { useCallback, useEffect, useState } from 'react'
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  FormControl,
+  Row,
+  Spinner,
+} from 'react-bootstrap'
 import {
   BootJumbotron,
   BootstrapTable,
@@ -7,84 +15,122 @@ import {
   Navigation,
 } from '../../components'
 import { IData } from '../../components/BootstrapTable/BootstrapTable'
-import { search } from '../../services'
-// import Styles from './home.module.css'
+import { IParams, queryAPI, search } from '../../services'
+
+interface ISelect {
+  offence: string[]
+  area: string[]
+  age: string[]
+  gender: string[]
+  year: string[]
+}
 
 const Home = () => {
   const [isLoading, setLoading] = useState(false)
   const [data, setData] = useState<any>([])
+  const [select, setSelect] = useState<ISelect>({
+    offence: [],
+    area: [],
+    age: [],
+    gender: [],
+    year: [],
+  })
+
+  const [form, setForm] = useState<IParams>({
+    offence: 'Advertising Prostitution',
+    area: '',
+    age: '',
+    gender: '',
+    year: '',
+  })
+
+  const fetchAPI = async () => {
+    const offenceArray = await queryAPI('offences')
+    const areaArray = await queryAPI('areas')
+    const ageArray = await queryAPI('ages')
+    const genderArray = await queryAPI('genders')
+    const yearArray = await queryAPI('years')
+    setSelect({
+      ...select,
+      offence: [...select.offence, ...offenceArray.offences],
+      area: [...select.area, ...areaArray.areas],
+      age: [...select.age, ...ageArray.ages],
+      gender: [...select.gender, ...genderArray.genders],
+      year: [...select.year, ...yearArray.years],
+    })
+  }
+
+  useEffect(() => {
+    fetchAPI()
+  }, [])
 
   const fetchData = useCallback(
     (fetchedData: IData) => setData([...data, fetchedData]),
     [data]
   )
 
-  const handleFetch = useCallback(
-    (param: string) => async (
-      event: React.MouseEvent<HTMLButtonElement, MouseEvent>
-    ) => {
-      if (!sessionStorage.getItem('token')) {
-        alert('Please log in')
-        return
+  const handleFetch = () => async (event: React.MouseEvent<HTMLElement>) => {
+    if (!sessionStorage.getItem('token')) {
+      alert('Please log in')
+      return
+    }
+    setLoading(true)
+    const fetchedData = await search(form)
+    setData([fetchedData.result])
+    setLoading(false)
+  }
+
+  const handleChange = (event: React.FormEvent<FormControl>) => {
+    const { name, value } = event.target as HTMLInputElement
+    setForm({
+      ...form,
+      [name]: value,
+    })
+  }
+
+  const renderSelects = () => {
+    const formSelects = []
+    for (const [key, value] of Object.entries(select)) {
+      let array = value
+
+      if (key !== 'offence') {
+        array = ['all', ...array]
       }
-      setLoading(true)
-      switch (param) {
-        case 'age': {
-          const fetchedData = await search('age', 'Juvenile')
-          setData([fetchedData.result])
-          break
-        }
-        case 'area': {
-          const fetchedData = await search(
-            'area',
-            'Moreton Bay Regional Council'
-          )
-          setData([fetchedData.result])
-          break
-        }
-        case 'year': {
-          const fetchedData = await search('year', '2006,2007,2008')
-          setData([fetchedData.result])
-          break
-        }
-        default: {
-          throw new Error()
-        }
-      }
-      setLoading(false)
-    },
-    [data]
-  )
+
+      formSelects.push(
+        <Form.Group controlId={`Form.${key}Select`} key={key}>
+          <Form.Label>{key}</Form.Label>
+          <Form.Control as="select" onChange={handleChange} name={key}>
+            {array.map((name: string, i: number) => (
+              <option key={i}>{name}</option>
+            ))}
+          </Form.Control>
+        </Form.Group>
+      )
+    }
+    return formSelects
+  }
 
   return (
     <React.Fragment>
       <Navigation onFetch={fetchData} />
       <BootJumbotron />
-      <Container fluid={true}>
+      <Container>
         <Row>
-          <Col md={2} />
+          <Col md={4} />
           <Col>
             <Form>
+              {renderSelects()}
               <Form.Row>
                 <Form.Group as={Col} controlId="formGridZip">
-                  <Button variant="primary" onClick={handleFetch('area')}>
-                    area=Moreton Bay Regional Council
-                  </Button>
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridZip">
-                  <Button variant="primary" onClick={handleFetch('age')}>
-                    age=Juvenile
-                  </Button>
-                </Form.Group>
-                <Form.Group as={Col} controlId="formGridZip">
-                  <Button variant="primary" onClick={handleFetch('year')}>
-                    year=2006,2007,2008
+                  <Button variant="primary" onClick={handleFetch()}>
+                    submit
                   </Button>
                 </Form.Group>
               </Form.Row>
             </Form>
           </Col>
-          <Col md={2} />
+          <Col md={4} />
         </Row>
         {isLoading ? (
           <Spinner animation="border" role="status">
@@ -93,7 +139,7 @@ const Home = () => {
         ) : (
           <Row>
             <Col>
-              <BootstrapTable data={data[0]} name={'offences'} />
+              <BootstrapTable data={data[0]} />
             </Col>
             <Col>
               <Map
@@ -102,6 +148,7 @@ const Home = () => {
                 loadingElement={<div style={{ height: `100%` }} />}
                 containerElement={<div style={{ height: `400px` }} />}
                 mapElement={<div style={{ height: `100%` }} />}
+                data={data[0]}
               />
             </Col>
           </Row>
