@@ -45,23 +45,22 @@ const Home = () => {
     year: '',
   })
 
-  const fetchAPI = async () => {
-    const offenceArray = await queryAPI('offences')
-    const areaArray = await queryAPI('areas')
-    const ageArray = await queryAPI('ages')
-    const genderArray = await queryAPI('genders')
-    const yearArray = await queryAPI('years')
-    setSelect({
-      ...select,
-      offence: [...select.offence, ...offenceArray.offences],
-      area: [...select.area, ...areaArray.areas],
-      age: [...select.age, ...ageArray.ages],
-      gender: [...select.gender, ...genderArray.genders],
-      year: [...select.year, ...yearArray.years],
-    })
-  }
-
   useEffect(() => {
+    const fetchAPI = async () => {
+      const offenceArray = await queryAPI('offences')
+      const areaArray = await queryAPI('areas')
+      const ageArray = await queryAPI('ages')
+      const genderArray = await queryAPI('genders')
+      const yearArray = await queryAPI('years')
+      setSelect({
+        ...select,
+        offence: [...select.offence, ...offenceArray.offences],
+        area: [...select.area, ...areaArray.areas],
+        age: [...select.age, ...ageArray.ages],
+        gender: [...select.gender, ...genderArray.genders],
+        year: [...select.year, ...yearArray.years],
+      })
+    }
     fetchAPI()
   }, [])
 

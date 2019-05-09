@@ -1,14 +1,6 @@
-import React, { useCallback, useState } from 'react'
-import {
-  Button,
-  ButtonToolbar,
-  Form,
-  // FormControl,
-  Nav,
-  Navbar,
-} from 'react-bootstrap'
+import React, { useState } from 'react'
+import { Button, ButtonToolbar, Form, Nav, Navbar } from 'react-bootstrap'
 import { VerticallyCenteredModal } from '..'
-// import { search } from '../../services'
 import { IData } from '../BootstrapTable/BootstrapTable'
 import Styles from './Navigation.module.css'
 
@@ -22,36 +14,21 @@ const Navigation: React.FC<IProps> = ({ onFetch }) => {
   const [isLogined, setIsLogined] = useState(
     sessionStorage.getItem('token') !== null
   )
-  // const [form, setForm] = useState({
-  //   param: 'offence',
-  //   filter: '',
-  // })
 
   const handleClose = () => {
     setSignupShow(false)
     setSigninShow(false)
   }
 
-  const handleLogin = useCallback(() => {
+  const handleLogin = () => {
     setIsLogined(true)
-  }, [isLogined])
+  }
 
   const handleLogout = () => {
     sessionStorage.removeItem('token')
     setIsLogined(false)
     alert('Hope you go back')
   }
-  // const handleSearch = () => {
-  //   search(form.param, form.filter).then(res => onFetch(res.result))
-  // }
-
-  // const handleChange = (event: React.FormEvent<FormControl>) => {
-  //   const { name, value } = event.target as HTMLInputElement
-  //   setForm({
-  //     ...form,
-  //     [name]: value,
-  //   })
-  // }
 
   const renderButtons = () => {
     if (!isLogined) {
