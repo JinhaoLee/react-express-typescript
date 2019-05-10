@@ -60,6 +60,29 @@ export function queryAPI(query: string): Promise<{ [key: string]: string[] }> {
     .catch(error => console.log(error))
 }
 
+export async function queryAll(): Promise<ISelect> {
+  const offenceArray = await queryAPI('offences')
+  const areaArray = await queryAPI('areas')
+  const ageArray = await queryAPI('ages')
+  const genderArray = await queryAPI('genders')
+  const yearArray = await queryAPI('years')
+  return {
+    offences: offenceArray.offences,
+    areas: areaArray.areas,
+    ages: ageArray.ages,
+    genders: genderArray.genders,
+    years: yearArray.years,
+  }
+}
+
+export interface ISelect {
+  offences: string[]
+  areas: string[]
+  ages: string[]
+  genders: string[]
+  years: string[]
+}
+
 export interface IParams {
   offence: string
   area: string

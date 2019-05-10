@@ -15,26 +15,18 @@ import {
   Navigation,
 } from '../../components'
 import { IData } from '../../components/BootstrapTable/BootstrapTable'
-import { IParams, queryAPI, search } from '../../services'
-
-interface ISelect {
-  offence: string[]
-  area: string[]
-  age: string[]
-  gender: string[]
-  year: string[]
-}
+import { IParams, ISelect, queryAll, search } from '../../services'
 
 const Home = () => {
   const [isLoading, setLoading] = useState(false)
   const [isShown, setIsShown] = useState(false)
   const [data, setData] = useState<any>([])
   const [select, setSelect] = useState<ISelect>({
-    offence: [],
-    area: [],
-    age: [],
-    gender: [],
-    year: [],
+    offences: [],
+    areas: [],
+    ages: [],
+    genders: [],
+    years: [],
   })
 
   const [form, setForm] = useState<IParams>({
@@ -47,18 +39,14 @@ const Home = () => {
 
   useEffect(() => {
     const fetchAPI = async () => {
-      const offenceArray = await queryAPI('offences')
-      const areaArray = await queryAPI('areas')
-      const ageArray = await queryAPI('ages')
-      const genderArray = await queryAPI('genders')
-      const yearArray = await queryAPI('years')
+      const { offences, areas, ages, genders, years } = await queryAll()
       setSelect({
         ...select,
-        offence: [...select.offence, ...offenceArray.offences],
-        area: [...select.area, ...areaArray.areas],
-        age: [...select.age, ...ageArray.ages],
-        gender: [...select.gender, ...genderArray.genders],
-        year: [...select.year, ...yearArray.years],
+        offences: [...select.offences, ...offences],
+        areas: [...select.areas, ...areas],
+        ages: [...select.ages, ...ages],
+        genders: [...select.genders, ...genders],
+        years: [...select.years, ...years],
       })
     }
     fetchAPI()
@@ -94,7 +82,7 @@ const Home = () => {
     for (const [key, value] of Object.entries(select)) {
       let array = value
 
-      if (key !== 'offence') {
+      if (key !== 'offences') {
         array = ['all', ...array]
       }
 

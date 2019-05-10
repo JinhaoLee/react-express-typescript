@@ -10,5 +10,8 @@ const certificate = fs.readFileSync(__dirname + "/../server.crt", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
 https.createServer(credentials, app).listen(PORT, () => {
-  console.log("\x1b[36m%s\x1b[0m", "Server listening on port " + PORT);
+  console.log(
+    "\x1b[36m%s\x1b[0m",
+    "Server listening on port " + PORT + " \u{1F602}"
+  );
 });
