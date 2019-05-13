@@ -1,12 +1,10 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import useFormValidation from '../../hooks/useFormValidation'
+import { NaviContext } from '../Navigation/Navigation'
 
-interface IProps {
-  onHide: () => void
-}
-
-const SignupForm: React.FC<IProps> = ({ onHide }) => {
+const SignupForm: React.FC = () => {
+  const value = useContext(NaviContext)
   const { form, handleChange, handleBlur, handleSubmit } = useFormValidation(
     {
       email: '',
@@ -15,7 +13,7 @@ const SignupForm: React.FC<IProps> = ({ onHide }) => {
       passwordValid: false,
       touched: { email: false, password: false },
     },
-    onHide
+    value!.onHide
   )
 
   return (

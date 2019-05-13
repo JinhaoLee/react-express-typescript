@@ -7,19 +7,15 @@ import {
   FormikActions,
   FormikProps,
 } from 'formik'
-import React from 'react'
+import React, { useContext } from 'react'
 import { Button, FormControl, FormGroup, FormLabel } from 'react-bootstrap'
 import * as Yup from 'yup'
 import { UserLogin } from '../../services'
+import { NaviContext } from '../Navigation/Navigation'
 
 interface IFormValues {
   email: string
   password: string
-}
-
-interface IProps {
-  onLogin: () => void
-  onHide: () => void
 }
 
 const SigninSchema = Yup.object().shape({
@@ -30,7 +26,8 @@ const SigninSchema = Yup.object().shape({
     .required('Required'),
 })
 
-const SigninForm: React.FC<IProps> = ({ onHide, onLogin }) => {
+const SigninForm: React.FC = () => {
+  const value = useContext(NaviContext)
   return (
     <div>
       <Formik
@@ -44,8 +41,8 @@ const SigninForm: React.FC<IProps> = ({ onHide, onLogin }) => {
             const loginResponse = await UserLogin(values.email, values.password)
             if (loginResponse.token) {
               sessionStorage.setItem('token', loginResponse.token)
-              onHide()
-              onLogin()
+              value!.onHide()
+              value!.onLogin()
             } else {
               alert(loginResponse.message)
               actions.setSubmitting(false)

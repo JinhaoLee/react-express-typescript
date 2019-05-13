@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Col,
@@ -14,7 +14,6 @@ import {
   Map,
   Navigation,
 } from '../../components'
-import { IData } from '../../components/BootstrapTable/BootstrapTable'
 import { IParams, ISelect, queryAll, search } from '../../services'
 
 const Home = () => {
@@ -38,7 +37,7 @@ const Home = () => {
   })
 
   useEffect(() => {
-    const fetchAPI = async () => {
+    ;(async () => {
       const { offences, areas, ages, genders, years } = await queryAll()
       setSelect({
         ...select,
@@ -48,16 +47,10 @@ const Home = () => {
         genders: [...select.genders, ...genders],
         years: [...select.years, ...years],
       })
-    }
-    fetchAPI()
+    })()
   }, [])
 
-  const fetchData = useCallback(
-    (fetchedData: IData) => setData([...data, fetchedData]),
-    [data]
-  )
-
-  const handleFetch = () => async (event: React.MouseEvent<HTMLElement>) => {
+  const handleSubmit = () => async (event: React.MouseEvent<HTMLElement>) => {
     if (!sessionStorage.getItem('token')) {
       alert('Please log in')
       return
@@ -112,7 +105,7 @@ const Home = () => {
               {renderSelects()}
               <Form.Row>
                 <Form.Group as={Col} controlId="formGridZip">
-                  <Button variant="primary" onClick={handleFetch()}>
+                  <Button variant="primary" onClick={handleSubmit()}>
                     submit
                   </Button>
                 </Form.Group>

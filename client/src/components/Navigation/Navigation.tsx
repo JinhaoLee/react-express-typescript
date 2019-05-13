@@ -1,7 +1,14 @@
-import React, { useState } from 'react'
+import React, { createContext, useState } from 'react'
 import { Button, ButtonToolbar, Form, Nav, Navbar } from 'react-bootstrap'
 import { VerticallyCenteredModal } from '..'
 import Styles from './Navigation.module.css'
+
+export interface INaviContext {
+  onHide: () => void
+  onLogin: () => void
+}
+
+export const NaviContext = createContext<INaviContext | null>(null)
 
 const Navigation: React.FC = () => {
   const [signupShow, setSignupShow] = useState(false)
@@ -49,7 +56,6 @@ const Navigation: React.FC = () => {
             onHide={handleClose}
             show={signinShow}
             type={'Sign in'}
-            login={() => setIsLogined(true)}
           />
         </>
       )
@@ -67,15 +73,19 @@ const Navigation: React.FC = () => {
   }
 
   return (
-    <Navbar bg="dark" variant="dark">
-      <Navbar.Brand href="#home">CAB230</Navbar.Brand>
-      <Nav className="mr-auto">
-        <Nav.Link href="">Home</Nav.Link>
-      </Nav>
-      <Form inline>
-        <ButtonToolbar>{renderButtons()}</ButtonToolbar>
-      </Form>
-    </Navbar>
+    <NaviContext.Provider
+      value={{ onHide: handleClose, onLogin: () => setIsLogined(true) }}
+    >
+      <Navbar bg="dark" variant="dark">
+        <Navbar.Brand href="#home">CAB230</Navbar.Brand>
+        <Nav className="mr-auto">
+          <Nav.Link href="">Home</Nav.Link>
+        </Nav>
+        <Form inline>
+          <ButtonToolbar>{renderButtons()}</ButtonToolbar>
+        </Form>
+      </Navbar>
+    </NaviContext.Provider>
   )
 }
 export default Navigation
