@@ -29,49 +29,6 @@ const Navigation: React.FC = () => {
     alert('Hope you go back')
   }
 
-  const renderButtons = () => {
-    if (!isLogined) {
-      return (
-        <>
-          <Button
-            variant="outline-info"
-            className={Styles.button}
-            onClick={() => setSignupShow(true)}
-          >
-            Sign up
-          </Button>
-          <Button
-            variant="outline-info"
-            className={Styles.button}
-            onClick={() => setSigninShow(true)}
-          >
-            Sign in
-          </Button>
-          <VerticallyCenteredModal
-            onHide={handleClose}
-            show={signupShow}
-            type={'Sign up'}
-          />
-          <VerticallyCenteredModal
-            onHide={handleClose}
-            show={signinShow}
-            type={'Sign in'}
-          />
-        </>
-      )
-    }
-
-    return (
-      <Button
-        variant="outline-info"
-        className={Styles.button}
-        onClick={handleLogout}
-      >
-        Logout
-      </Button>
-    )
-  }
-
   return (
     <NaviContext.Provider
       value={{ onHide: handleClose, onLogin: () => setIsLogined(true) }}
@@ -82,10 +39,48 @@ const Navigation: React.FC = () => {
           <Nav.Link href="">Home</Nav.Link>
         </Nav>
         <Form inline>
-          <ButtonToolbar>{renderButtons()}</ButtonToolbar>
+          <ButtonToolbar>
+            {!isLogined ? (
+              <>
+                <Button
+                  variant="outline-info"
+                  className={Styles.button}
+                  onClick={() => setSignupShow(true)}
+                >
+                  Sign up
+                </Button>
+                <Button
+                  variant="outline-info"
+                  className={Styles.button}
+                  onClick={() => setSigninShow(true)}
+                >
+                  Sign in
+                </Button>
+                <VerticallyCenteredModal
+                  onHide={handleClose}
+                  show={signupShow}
+                  type={'Sign up'}
+                />
+                <VerticallyCenteredModal
+                  onHide={handleClose}
+                  show={signinShow}
+                  type={'Sign in'}
+                />
+              </>
+            ) : (
+              <Button
+                variant="outline-info"
+                className={Styles.button}
+                onClick={handleLogout}
+              >
+                Logout
+              </Button>
+            )}
+          </ButtonToolbar>
         </Form>
       </Navbar>
     </NaviContext.Provider>
   )
 }
+
 export default Navigation
