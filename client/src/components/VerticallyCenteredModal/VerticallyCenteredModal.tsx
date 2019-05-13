@@ -6,7 +6,7 @@ interface IProps {
   show: boolean
   type: string
   onHide: () => void
-  login: () => void
+  login?: () => void
 }
 
 const VerticallyCenteredModal: React.SFC<IProps> = props => {
@@ -23,8 +23,8 @@ const VerticallyCenteredModal: React.SFC<IProps> = props => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        {props.type === 'Sign in' ? (
-          <SigninForm onHide={props.onHide} login={props.login} />
+        {props.login ? (
+          <SigninForm onHide={props.onHide} onLogin={props.login} />
         ) : (
           <SignupForm onHide={props.onHide} />
         )}

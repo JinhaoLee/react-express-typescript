@@ -1,57 +1,21 @@
-import React, { FocusEvent, FormEvent, useCallback, useState } from 'react'
-import { Button, Form, FormControl } from 'react-bootstrap'
-import { validateEmail, validatePassword } from '../../helpers'
-import { register } from '../../services'
+import React from 'react'
+import { Button, Form } from 'react-bootstrap'
+import useFormValidation from '../../hooks/useFormValidation'
 
 interface IProps {
   onHide: () => void
 }
 
 const SignupForm: React.FC<IProps> = ({ onHide }) => {
-  const [form, setForm] = useState({
-    email: '',
-    emailValid: false,
-    password: '',
-    passwordValid: false,
-    touched: { email: false, password: false },
-  })
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-    event.stopPropagation()
-    register(form.email, form.password)
-      .then(res => {
-        if (res.message[0] === '0') {
-          onHide()
-        }
-        alert(res.message)
-      })
-      .catch(error => alert(error))
-  }
-
-  const handleBlur = (field: string) => (
-    event: FocusEvent<HTMLInputElement>
-  ) => {
-    setForm({
-      ...form,
-      touched: {
-        ...form.touched,
-        [field]: true,
-      },
-    })
-  }
-
-  const handleChange = useCallback(
-    (event: FormEvent<FormControl>) => {
-      const { name, value } = event.target as HTMLInputElement
-      setForm({
-        ...form,
-        [name]: value,
-        [name + 'Valid']:
-          name === 'email' ? validateEmail(value) : validatePassword(value),
-      })
+  const { form, handleChange, handleBlur, handleSubmit } = useFormValidation(
+    {
+      email: '',
+      emailValid: false,
+      password: '',
+      passwordValid: false,
+      touched: { email: false, password: false },
     },
-    [form]
+    onHide
   )
 
   return (
@@ -85,8 +49,7 @@ const SignupForm: React.FC<IProps> = ({ onHide }) => {
           onBlur={handleBlur('password')}
         />
         <Form.Control.Feedback type="invalid">
-          Please provide a valid password, which length should be greater than
-          6.
+          Password length should be greater than 6.
         </Form.Control.Feedback>
       </Form.Group>
       <Button

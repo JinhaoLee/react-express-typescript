@@ -102,7 +102,7 @@ const Home = () => {
 
   return (
     <React.Fragment>
-      <Navigation onFetch={fetchData} />
+      <Navigation />
       <BootJumbotron />
       <Container className="mb-5">
         <Row>

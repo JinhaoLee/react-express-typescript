@@ -18,7 +18,7 @@ interface IFormValues {
 }
 
 interface IProps {
-  login: () => void
+  onLogin: () => void
   onHide: () => void
 }
 
@@ -30,7 +30,7 @@ const SigninSchema = Yup.object().shape({
     .required('Required'),
 })
 
-const SigninForm: React.FC<IProps> = ({ onHide, login }) => {
+const SigninForm: React.FC<IProps> = ({ onHide, onLogin }) => {
   return (
     <div>
       <Formik
@@ -45,7 +45,7 @@ const SigninForm: React.FC<IProps> = ({ onHide, login }) => {
             if (loginResponse.token) {
               sessionStorage.setItem('token', loginResponse.token)
               onHide()
-              login()
+              onLogin()
             } else {
               alert(loginResponse.message)
               actions.setSubmitting(false)
