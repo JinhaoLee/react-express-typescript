@@ -1,0 +1,9 @@
+.fullWidthTabs {
+  /* display: table; */
+  width: 100%;
+  /* table-layout: fixed; */
+}
+
+.tab-content {
+  width: 100%;
+}

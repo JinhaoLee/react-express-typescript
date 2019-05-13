@@ -1,0 +1,23 @@
+.jumbotron {
+  text-align: center;
+  background-color: #007eff;
+}
+
+.heading {
+  color: #fff;
+  font-size: 3em;
+  font-weight: 500;
+  line-height: 1;
+  margin-bottom: 0.66em;
+  margin-top: 0;
+}
+
+.page {
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  font-size: 1.2em;
+  color: #bfdfff;
+}

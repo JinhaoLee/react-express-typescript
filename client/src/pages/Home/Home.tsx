@@ -8,13 +8,9 @@ import {
   Row,
   Spinner,
 } from 'react-bootstrap'
-import {
-  BootJumbotron,
-  BootstrapTable,
-  Map,
-  Navigation,
-} from '../../components'
+import { BootJumbotron, BootTap, Navigation } from '../../components'
 import { IParams, ISelect, queryAll, search } from '../../services'
+import Styles from './home.module.css'
 
 const Home = () => {
   const [isLoading, setLoading] = useState(false)
@@ -74,13 +70,11 @@ const Home = () => {
     const formSelects = []
     for (const [key, value] of Object.entries(select)) {
       let array = value
-
       if (key !== 'offences') {
         array = ['all', ...array]
       }
-
       formSelects.push(
-        <Form.Group controlId={`Form.${key}Select`} key={key}>
+        <Form.Group as={Col} controlId={`Form.${key}Select`} key={key}>
           <Form.Label>{key}</Form.Label>
           <Form.Control as="select" onChange={handleChange} name={key}>
             {array.map((name: string, i: number) => (
@@ -99,10 +93,11 @@ const Home = () => {
       <BootJumbotron />
       <Container className="mb-5">
         <Row>
-          <Col md={4} />
           <Col>
             <Form>
-              {renderSelects()}
+              <Form.Row className={Styles.formBorder}>
+                {renderSelects()}
+              </Form.Row>
               <Form.Row>
                 <Form.Group as={Col} controlId="formGridZip">
                   <Button variant="primary" onClick={handleSubmit()}>
@@ -112,7 +107,6 @@ const Home = () => {
               </Form.Row>
             </Form>
           </Col>
-          <Col md={4} />
         </Row>
         {isShown ? (
           isLoading ? (
@@ -121,19 +115,7 @@ const Home = () => {
             </Spinner>
           ) : (
             <Row>
-              <Col>
-                <BootstrapTable data={data[0]} />
-              </Col>
-              <Col>
-                <Map
-                  isMarkerShown
-                  googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_4TBv8ssKrKew8ewisQ3oidXouSyXq8&v=3.exp&libraries=geometry,drawing,places"
-                  loadingElement={<div style={{ height: `100%` }} />}
-                  containerElement={<div style={{ height: `400px` }} />}
-                  mapElement={<div style={{ height: `100%` }} />}
-                  data={data[0]}
-                />
-              </Col>
+              <BootTap data={data[0]} />
             </Row>
           )
         ) : null}
