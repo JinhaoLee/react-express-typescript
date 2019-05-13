@@ -44,7 +44,7 @@ const useFormValidation = (initialState: IForm, onHide: () => void) => {
     register(form.email, form.password)
       .then(res => {
         // TODO: need to be changed
-        if (res.ok === '0') {
+        if (res.message[0] === '0') {
           onHide()
         }
         alert(res.message)
