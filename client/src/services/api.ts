@@ -39,10 +39,9 @@ export function search(params: IParams): Promise<{ result: ISearchRes[] }> {
   let queries = ''
   for (const [key, value] of Object.entries(params)) {
     if (value !== '' && value !== 'All') {
-      queries += `${key.slice(0, -1)}=${value}&`
+      queries += `${key}=${value}&`
     }
   }
-
   return fetch(
     `${REACT_APP_ENDPOINT_URL}/search?${queries.slice(0, -1).trim()}`,
     {

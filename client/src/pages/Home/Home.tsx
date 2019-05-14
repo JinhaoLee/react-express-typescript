@@ -78,7 +78,11 @@ const Home = () => {
       formSelects.push(
         <Form.Group as={Col} controlId={`Form.${key}Select`} key={key}>
           <Form.Label>{Capitalize(key)}</Form.Label>
-          <Form.Control as="select" onChange={handleChange} name={key}>
+          <Form.Control
+            as="select"
+            onChange={handleChange}
+            name={key.slice(0, -1)}
+          >
             {array.map((name: string, i: number) => (
               <option key={i}>{name}</option>
             ))}
