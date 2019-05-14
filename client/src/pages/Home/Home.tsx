@@ -66,6 +66,8 @@ const Home = () => {
     })
   }
 
+  const Capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
+
   const renderSelects = () => {
     const formSelects = []
     for (const [key, value] of Object.entries(select)) {
@@ -75,7 +77,7 @@ const Home = () => {
       }
       formSelects.push(
         <Form.Group as={Col} controlId={`Form.${key}Select`} key={key}>
-          <Form.Label>{key}</Form.Label>
+          <Form.Label>{Capitalize(key)}</Form.Label>
           <Form.Control as="select" onChange={handleChange} name={key}>
             {array.map((name: string, i: number) => (
               <option key={i}>{name}</option>
@@ -92,6 +94,9 @@ const Home = () => {
       <Navigation />
       <BootJumbotron />
       <Container className="mb-5">
+        <Row className="my-3 px-3">
+          <h2>Please select any fields to search</h2>
+        </Row>
         <Row>
           <Col>
             <Form>
@@ -101,7 +106,7 @@ const Home = () => {
               <Form.Group as={Row}>
                 <Col sm={{ span: 7, offset: 5 }}>
                   <Button variant="primary" onClick={handleSubmit()}>
-                    submit
+                    Search
                   </Button>
                 </Col>
               </Form.Group>
@@ -110,9 +115,13 @@ const Home = () => {
         </Row>
         {isShown ? (
           isLoading ? (
-            <Spinner animation="border" role="status">
-              <span className="sr-only">Loading...</span>
-            </Spinner>
+            <Row>
+              <Col sm={{ span: 7, offset: 5 }} className="pl-5 pt-3">
+                <Spinner animation="border" role="status">
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </Col>
+            </Row>
           ) : (
             <Row>
               <BootTap data={data[0]} />
