@@ -71,7 +71,7 @@ const Home = () => {
     for (const [key, value] of Object.entries(select)) {
       let array = value
       if (key !== 'offences') {
-        array = ['all', ...array]
+        array = ['All', ...array]
       }
       formSelects.push(
         <Form.Group as={Col} controlId={`Form.${key}Select`} key={key}>
@@ -98,13 +98,13 @@ const Home = () => {
               <Form.Row className={Styles.formBorder}>
                 {renderSelects()}
               </Form.Row>
-              <Form.Row>
-                <Form.Group as={Col} controlId="formGridZip">
+              <Form.Group as={Row}>
+                <Col sm={{ span: 7, offset: 5 }}>
                   <Button variant="primary" onClick={handleSubmit()}>
                     submit
                   </Button>
-                </Form.Group>
-              </Form.Row>
+                </Col>
+              </Form.Group>
             </Form>
           </Col>
         </Row>

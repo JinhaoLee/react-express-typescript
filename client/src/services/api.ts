@@ -38,7 +38,7 @@ export function UserLogin(email: string, password: string) {
 export function search(params: IParams): Promise<{ result: ISearchRes[] }> {
   let queries = ''
   for (const [key, value] of Object.entries(params)) {
-    if (value !== '' && value !== 'all') {
+    if (value !== '' && value !== 'All') {
       queries += `${key}=${value}&`
     }
   }

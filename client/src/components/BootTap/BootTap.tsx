@@ -1,37 +1,26 @@
 import React from 'react'
-import { Col, Row, Tab, Tabs } from 'react-bootstrap'
+import { Tab, Tabs } from 'react-bootstrap'
 import { BootstrapTable, Map } from '..'
 import { IData } from '../BootstrapTable/BootstrapTable'
 import Styles from './bootTap.module.css'
 
 const BootTap: React.FC<IData> = ({ data }) => {
   return (
-    <Tabs
-      defaultActiveKey="home"
-      id="uncontrolled-tab"
-      className={Styles.fullWidthTabs}
-    >
-      <Tab eventKey="home" title="Home" className={Styles.fullWidthTabs}>
-        <Row>
-          <Col>
-            <BootstrapTable data={data} />
-          </Col>
-          <Col>
-            <Map
-              isMarkerShown
-              googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_4TBv8ssKrKew8ewisQ3oidXouSyXq8&v=3.exp&libraries=geometry,drawing,places"
-              loadingElement={<div style={{ height: `100%` }} />}
-              containerElement={<div style={{ height: `400px` }} />}
-              mapElement={<div style={{ height: `100%` }} />}
-              data={data}
-            />
-          </Col>
-        </Row>
+    <Tabs defaultActiveKey="table" id="tab" className={Styles.fullWidthTabs}>
+      <Tab eventKey="table" title="Table">
+        <BootstrapTable data={data} />
       </Tab>
-      <Tab eventKey="profile" title="Profile">
-        <p>Hello World</p>
+      <Tab eventKey="map" title="Map">
+        <Map
+          isMarkerShown
+          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyBl_4TBv8ssKrKew8ewisQ3oidXouSyXq8&v=3.exp&libraries=geometry,drawing,places"
+          loadingElement={<div style={{ height: `100%` }} />}
+          containerElement={<div style={{ height: `400px` }} />}
+          mapElement={<div style={{ height: `100%` }} />}
+          data={data}
+        />
       </Tab>
-      <Tab eventKey="contact" title="Contact">
+      <Tab eventKey="graph" title="Graph">
         <p>Hello World</p>
       </Tab>
     </Tabs>
