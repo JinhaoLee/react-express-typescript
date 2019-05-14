@@ -39,15 +39,19 @@ export function search(params: IParams): Promise<{ result: ISearchRes[] }> {
   let queries = ''
   for (const [key, value] of Object.entries(params)) {
     if (value !== '' && value !== 'All') {
-      queries += `${key}=${value}&`
+      queries += `${key.slice(0, -1)}=${value}&`
     }
   }
-  return fetch(`${REACT_APP_ENDPOINT_URL}/search?${queries}`, {
-    method: 'GET',
-    headers: {
-      Authorization: `Bearer ${sessionStorage.getItem('token')}`,
-    },
-  })
+
+  return fetch(
+    `${REACT_APP_ENDPOINT_URL}/search?${queries.slice(0, -1).trim()}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem('token')}`,
+      },
+    }
+  )
     .then(response => response.json())
     .catch(error => console.error(error))
 }
