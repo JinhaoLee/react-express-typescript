@@ -54,7 +54,8 @@ const Home = () => {
     setIsShown(true)
     setLoading(true)
     const fetchedData = await search(form)
-    setData([fetchedData.result])
+    const updateData = fetchedData.result.filter(value => value.total !== 0)
+    setData([...data, updateData])
     setLoading(false)
   }
 
