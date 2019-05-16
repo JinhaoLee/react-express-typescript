@@ -1,16 +1,15 @@
 import React from 'react'
 import { Bar } from 'react-chartjs-2'
 import { IData } from '../BootstrapTable/BootstrapTable'
+import Styles from './barChart.module.css'
 
 const BarChart: React.SFC<IData> = ({ data }) => {
-  console.log(data)
   const labels = data.map(value => value.LGA)
   const dataset = data.map(value => value.total)
   const chartData = {
     labels,
     datasets: [
       {
-        label: 'Number of Tweets',
         data: dataset,
         backgroundColor: [
           '#F08080',
@@ -25,7 +24,40 @@ const BarChart: React.SFC<IData> = ({ data }) => {
       },
     ],
   }
-  return <Bar data={chartData} width={100} height={50} />
+  const options = {
+    legend: {
+      display: false,
+    },
+    title: {
+      display: true,
+      text: 'Area',
+      fontSize: 15,
+    },
+    scales: {
+      xAxes: [
+        {
+          maxBarThickness: 50,
+        },
+      ],
+      yAxes: [
+        {
+          scaleLabel: {
+            display: true,
+            labelString: 'Total',
+            fontSize: 15,
+          },
+          ticks: {
+            beginAtZero: true,
+          },
+        },
+      ],
+    },
+  }
+  return (
+    <div className={Styles.chart}>
+      <Bar data={chartData} options={options} />
+    </div>
+  )
 }
 
 export default BarChart
