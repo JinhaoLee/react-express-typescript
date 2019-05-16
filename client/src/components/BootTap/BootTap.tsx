@@ -1,6 +1,7 @@
 import React from 'react'
 import { Tab, Tabs } from 'react-bootstrap'
 import { BootstrapTable, Map } from '..'
+import BarChart from '../BarChart/BarChart'
 import { IData } from '../BootstrapTable/BootstrapTable'
 import Styles from './bootTap.module.css'
 
@@ -21,7 +22,7 @@ const BootTap: React.FC<IData> = ({ data }) => {
         />
       </Tab>
       <Tab eventKey="graph" title="Graph">
-        <p>Hello World</p>
+        <BarChart data={data} />
       </Tab>
     </Tabs>
   )
