@@ -22,18 +22,20 @@ class Routes {
 
   public routes(app: Application): void {
     // Authentication
-    app.route("/login").post(this.authController.login);
-    app.route("/register").post(this.registerController.register);
+    app.route("/api/v2/login").post(this.authController.login);
+    app.route("/api/v2/register").post(this.registerController.register);
 
     // search
-    app.route("/search").get(authMiddleware, this.searchController.search);
+    app
+      .route("/api/v2/search")
+      .get(authMiddleware, this.searchController.search);
 
     // helpers
-    app.route("/offences").get(this.helperController.getOffences);
-    app.route("/areas").get(this.helperController.getAreas);
-    app.route("/ages").get(this.helperController.getAges);
-    app.route("/genders").get(this.helperController.getGenders);
-    app.route("/years").get(this.helperController.getYears);
+    app.route("/api/v2/offences").get(this.helperController.getOffences);
+    app.route("/api/v2/areas").get(this.helperController.getAreas);
+    app.route("/api/v2/ages").get(this.helperController.getAges);
+    app.route("/api/v2/genders").get(this.helperController.getGenders);
+    app.route("/api/v2/years").get(this.helperController.getYears);
   }
 }
 
