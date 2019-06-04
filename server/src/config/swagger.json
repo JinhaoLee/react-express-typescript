@@ -3,14 +3,23 @@
   "info": {
     "title": "CAB230 : Web Computing API",
     "description": "This API is to be used during development of assignments for the QUT CAB230 Web Computing Unit.",
-    "version": "1.0.0"
+    "version": "1.0.0",
+    "termsOfService": "http://swagger.io/terms/",
+    "contact": {
+      "email": "n9807853@qut.edu.au"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
   },
   "servers": [
     {
-      "url": "http://localhost:8080",
+      "url": "https://localhost:443",
       "description": "Local host server for testing"
     }
   ],
+  "basePath": "/api",
   "paths": {
     "/register": {
       "post": {
@@ -32,7 +41,14 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/createdMessage"
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    }
+                  }
                 }
               }
             }
@@ -55,9 +71,372 @@
           }
         }
       }
+    },
+    "/login": {
+      "post": {
+        "summary": "Login with an existing user account",
+        "tags": ["Authentication"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/user"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "access_toke": {
+                      "type": "string",
+                      "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjo1Nzg2LCJlbWFpbCI6ImRlbW8xMjM0QGdtYWlsLmNvbSJ9LCJpYXQiOjE1NTUzMjQ2MDIsImV4cCI6MTU1NTQxMTAwMn0.mo85iKuAQ_h8n8-6pkeNNs5CCnV0G8hScxhi_ml_Q6c"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "invalid login - bad password"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "get": {
+        "summary": "Search for Offence data",
+        "tags": ["Search"],
+        "security": [
+          {
+            "bearerAuth": [
+              {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+              }
+            ]
+          }
+        ],
+        "parameters": [
+          {
+            "in": "query",
+            "name": "offence",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Name of the Offence to search for"
+          },
+          {
+            "in": "query",
+            "name": "area",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "List of comma-separated Areas (LGAs) to filter search results by"
+          },
+          {
+            "in": "query",
+            "name": "age",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "List of comma-separated Ages to filter search results by"
+          },
+          {
+            "in": "query",
+            "name": "gender",
+            "schema": {
+              "type": "string"
+            },
+            "required": false,
+            "description": "List of comma-separated Genders to filter search results by"
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "schema": {
+              "type": "intager"
+            },
+            "required": false,
+            "description": "List of comma-separated Years to filter search results by"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "schema": {
+              "type": "intager"
+            },
+            "required": false,
+            "description": "List of comma-separated Months to filter search results by (1-12)"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "query": {
+                      "type": "object",
+                      "properties": {
+                        "offence": {
+                          "type": "string",
+                          "example": "Homicide (Murder)"
+                        }
+                      }
+                    },
+                    "result": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "LGA": {
+                            "type": "string",
+                            "example": "Aurukun Shire Council"
+                          },
+                          "total": {
+                            "type": "integer",
+                            "example": "4"
+                          },
+                          "lat": {
+                            "type": "decimal(10,8)",
+                            "example": "-27.470812"
+                          },
+                          "lng": {
+                            "type": "decimal(11,8)",
+                            "example": "153.022455"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "oops! it looks like you're missing the offence query parm"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "type": "object",
+                    "message": {
+                      "type": "string",
+                      "example": "oh no! it looks like your authorization token is invalid..."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/offences": {
+      "get": {
+        "description": "List of offences to perform searches for",
+        "summary": "List of offences to perform searches for",
+        "tags": ["Helper"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "offences": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Advertising Prostitution", "Armed Robbery"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/areas": {
+      "get": {
+        "description": "List of Areas to filter search results by",
+        "summary": "List of Areas to filter search results by",
+        "tags": ["Helper"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "areas": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [
+                        "Aurukun Shire Council",
+                        "Balonne Shire Council"
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ages": {
+      "get": {
+        "description": "List of Ages to filter search results by",
+        "summary": "List of Ages to filter search results by",
+        "tags": ["Helper"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "ages": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Adult", "Juvenile"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/genders": {
+      "get": {
+        "description": "List of Genders to filter search results by",
+        "summary": "List of Genders to filter search results by",
+        "tags": ["Helper"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "genders": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": ["Female", "Male"]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/years": {
+      "get": {
+        "description": "List of Years to filter search results by",
+        "summary": "List of Years to filter search results by",
+        "tags": ["Helper"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "type": "object",
+                    "years": {
+                      "type": "array",
+                      "items": {
+                        "type": "integer"
+                      },
+                      "example": [2001, 2002]
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
     "schemas": {
       "user": {
         "properties": {
@@ -66,21 +445,12 @@
           "email": {
             "type": "string",
             "required": true,
-            "example": "demo-user@gmail.com"
+            "example": "demouser@gmail.com"
           },
           "password": {
             "type": "string",
             "required": true,
             "example": "demouserpassword"
-          }
-        }
-      },
-      "createdMessage": {
-        "properties": {
-          "type": "object",
-          "message": {
-            "type": "string",
-            "example": "success"
           }
         }
       }

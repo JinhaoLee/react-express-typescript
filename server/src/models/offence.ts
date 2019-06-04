@@ -2,22 +2,23 @@ import knex from "../db/knex";
 
 type Query = {
   offence: string;
-  area: string | null;
-  age: string | null;
-  gender: string | null;
-  year: string | null;
-  month: string | null;
+  area: string | undefined;
+  age: string | undefined;
+  gender: string | undefined;
+  year: string | undefined;
+  month: string | undefined;
 };
 
 class Offence {
   public getOffences = async (query: Query) => {
     const { offence, area, age, gender, year, month } = query;
+    const params = { area, age, gender, year, month };
     const offenceNameRows = await knex("offence_columns")
       .select("column")
       .where("pretty", offence);
 
     if (!offenceNameRows[0]) {
-      throw new Error("Offence name not found");
+      throw new Error("Offence not found");
     }
 
     const offenceName = offenceNameRows[0].column;
@@ -31,21 +32,15 @@ class Offence {
       )
       .join("areas", { "areas.area": "offences.area" })
       .modify(queryBuilder => {
-        // TODO: need to rebuild
-        if (area) {
-          queryBuilder.where("offences.area", area);
-        }
-        if (age) {
-          queryBuilder.where("offences.age", age);
-        }
-        if (gender) {
-          queryBuilder.where("offences.gender", gender);
-        }
-        if (year) {
-          queryBuilder.where("offences.year", year);
-        }
-        if (month) {
-          queryBuilder.where("offences.year", month);
+        for (const [key, value] of Object.entries(params)) {
+          if (value !== undefined) {
+            const paramList = value.split(",");
+            if (paramList.length > 1) {
+              queryBuilder.whereIn(`offences.${key}`, paramList);
+            } else {
+              queryBuilder.where(`offences.${key}`, paramList[0]);
+            }
+          }
         }
       })
       .groupBy("offences.area");

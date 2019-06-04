@@ -35,17 +35,8 @@
     ],
     "no-internal-module": true,
     "no-trailing-whitespace": true,
-    "no-null-keyword": true,
+    "no-null-keyword": false,
     "prefer-const": true,
     "jsdoc-format": true
   }
 }
-// {
-//   "defaultSeverity": "error",
-//   "extends": ["tslint:recommended"],
-//   "jsRules": {},
-//   "rules": {
-//     "trailing-comma": [false]
-//   },
-//   "rulesDirectory": []
-// }

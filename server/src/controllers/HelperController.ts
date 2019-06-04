@@ -16,31 +16,31 @@ class HelperController {
   };
 
   public getAreas = async (_req: Request, res: Response) => {
-    const offences = (await this.offence.getAreaList()).map(
+    const areas = (await this.offence.getAreaList()).map(
       (offence: { area: string }) => offence.area
     );
-    res.status(200).send({ offences });
+    res.status(200).send({ areas });
   };
 
   public getAges = async (_req: Request, res: Response) => {
-    const offences = (await this.offence.getAgeList()).map(
+    const ages = (await this.offence.getAgeList()).map(
       (offence: { age: string }) => offence.age
     );
-    res.status(200).send({ offences });
+    res.status(200).send({ ages });
   };
 
   public getGenders = async (_req: Request, res: Response) => {
-    const offences = (await this.offence.getGenderList()).map(
+    const genders = (await this.offence.getGenderList()).map(
       (offence: { gender: string }) => offence.gender
     );
-    res.status(200).send({ offences });
+    res.status(200).send({ genders });
   };
 
   public getYears = async (_req: Request, res: Response) => {
-    const offences = (await this.offence.getYearList()).map(
+    const years = (await this.offence.getYearList()).map(
       (offence: { year: string }) => offence.year
     );
-    res.status(200).send({ offences });
+    res.status(200).send({ years });
   };
 }
 

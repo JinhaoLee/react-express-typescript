@@ -8,6 +8,7 @@ import path from "path";
 import rfs from "rotating-file-stream";
 import swaggerUi from "swagger-ui-express";
 import * as swaggerDocument from "./config/swagger.json";
+import cors from "cors";
 import { errorMiddleware } from "./middlewares";
 
 class App {
@@ -30,6 +31,8 @@ class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     // secure Express apps by setting various HTTP headers
     this.app.use(helmet());
+    // support cors
+    this.app.use(cors());
     // use dev/combined preset
     const accessLogStream = rfs("access.log", {
       interval: "1d",

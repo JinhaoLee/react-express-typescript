@@ -1,15 +1,19 @@
 import * as jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import { HttpException } from "../exceptions";
 
 const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   let token =
     <string>req.headers["x-access-token"] || req.headers["authorization"];
 
   if (!token) {
-    return res.json({
-      success: false,
-      message: "Auth token is not supplied"
-    });
+    next(
+      new HttpException(
+        401,
+        "oops! it looks like you're missing the authorization header"
+      )
+    );
+    return;
   }
 
   if (token.startsWith("Bearer ")) {
