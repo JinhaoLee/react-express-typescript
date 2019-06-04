@@ -15,15 +15,12 @@
   },
   "servers": [
     {
-      "url": "https://localhost:443",
+      "url": "https://localhost:443/api/v2",
       "description": "Local host server for testing"
     }
   ],
-  "host": "localhost:443",
-  "basePath": "/api/v2",
-  "schemes": ["https"],
   "paths": {
-    "/api/v2/register": {
+    "/register": {
       "post": {
         "summary": "Registers a new user account.",
         "tags": ["Authentication"],
@@ -74,7 +71,7 @@
         }
       }
     },
-    "/api/v2/login": {
+    "/login": {
       "post": {
         "summary": "Login with an existing user account",
         "tags": ["Authentication"],
@@ -129,7 +126,7 @@
         }
       }
     },
-    "/api/v2/search": {
+    "/search": {
       "get": {
         "summary": "Search for Offence data",
         "tags": ["Search"],
@@ -282,7 +279,7 @@
         }
       }
     },
-    "/api/v2/offences": {
+    "/offences": {
       "get": {
         "description": "List of offences to perform searches for",
         "summary": "List of offences to perform searches for",
@@ -311,7 +308,7 @@
         }
       }
     },
-    "/api/v2/areas": {
+    "/areas": {
       "get": {
         "description": "List of Areas to filter search results by",
         "summary": "List of Areas to filter search results by",
@@ -343,7 +340,7 @@
         }
       }
     },
-    "/api/v2/ages": {
+    "/ages": {
       "get": {
         "description": "List of Ages to filter search results by",
         "summary": "List of Ages to filter search results by",
@@ -372,7 +369,7 @@
         }
       }
     },
-    "/api/v2/genders": {
+    "/genders": {
       "get": {
         "description": "List of Genders to filter search results by",
         "summary": "List of Genders to filter search results by",
@@ -401,7 +398,7 @@
         }
       }
     },
-    "/api/v2/years": {
+    "/years": {
       "get": {
         "description": "List of Years to filter search results by",
         "summary": "List of Years to filter search results by",
