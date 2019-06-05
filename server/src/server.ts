@@ -12,6 +12,6 @@ const credentials = { key: privateKey, cert: certificate };
 https.createServer(credentials, app).listen(PORT, () => {
   console.log(
     "\x1b[36m%s\x1b[0m",
-    "Server listening on port " + PORT + " \u{1F602}"
+    `Server listening on https://localhost:${PORT} \u{1F602}`
   );
 });

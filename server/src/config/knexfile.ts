@@ -1,4 +1,3 @@
-// Update with your config settings.
 type Knex = { [key: string]: {} };
 
 const knex: Knex = {
@@ -22,16 +21,10 @@ const knex: Knex = {
   production: {
     client: "mysql",
     connection: {
-      database: "my_db",
-      user: "username",
-      password: "password"
-    },
-    pool: {
-      min: 2,
-      max: 10
-    },
-    migrations: {
-      tableName: "knex_migrations"
+      host: "127.0.0.1",
+      user: "root",
+      password: "Cab230!",
+      database: "web_computing"
     }
   }
 };

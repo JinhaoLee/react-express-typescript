@@ -22,20 +22,32 @@ class Routes {
 
   public routes(app: Application): void {
     // Authentication
-    app.route("/api/v2/login").post(this.authController.login);
-    app.route("/api/v2/register").post(this.registerController.register);
+    app.route(`${process.env.API_BASE}/login`).post(this.authController.login);
+    app
+      .route(`${process.env.API_BASE}/register`)
+      .post(this.registerController.register);
 
     // search
     app
-      .route("/api/v2/search")
+      .route(`${process.env.API_BASE}/search`)
       .get(authMiddleware, this.searchController.search);
 
     // helpers
-    app.route("/api/v2/offences").get(this.helperController.getOffences);
-    app.route("/api/v2/areas").get(this.helperController.getAreas);
-    app.route("/api/v2/ages").get(this.helperController.getAges);
-    app.route("/api/v2/genders").get(this.helperController.getGenders);
-    app.route("/api/v2/years").get(this.helperController.getYears);
+    app
+      .route(`${process.env.API_BASE}/offences`)
+      .get(this.helperController.getOffences);
+    app
+      .route(`${process.env.API_BASE}/areas`)
+      .get(this.helperController.getAreas);
+    app
+      .route(`${process.env.API_BASE}/ages`)
+      .get(this.helperController.getAges);
+    app
+      .route(`${process.env.API_BASE}/genders`)
+      .get(this.helperController.getGenders);
+    app
+      .route(`${process.env.API_BASE}/years`)
+      .get(this.helperController.getYears);
   }
 }
 

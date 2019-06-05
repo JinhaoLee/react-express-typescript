@@ -34,13 +34,13 @@ class App {
     // support cors
     this.app.use(cors());
     // use dev/combined preset
-    const accessLogStream = rfs("access.log", {
-      interval: "1d",
-      path: path.join(__dirname, "log")
-    });
     if (process.env.NODE_ENV === "development") {
       this.app.use(morgan("dev"));
     } else {
+      const accessLogStream = rfs("access.log", {
+        interval: "1d",
+        path: path.join(__dirname, "log")
+      });
       this.app.use(morgan("combined", { stream: accessLogStream }));
     }
     // setup swagger
